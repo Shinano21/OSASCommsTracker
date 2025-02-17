@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outgoing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            text-align: left;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h2>Submit Your Information</h2>
+    <form action="https://script.google.com/macros/s/AKfycbwqBA8lRuMs2FR1tFpS9czSaubXzw2V7ONKGa58gw2K48td6_Z7gr_c_28QSrVkEGCb/exec" 
+          method="POST">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br><br>
+
+        <label for="office">Office:</label>
+        <input type="text" id="office" name="office" required><br><br>
+
+        <label for="control_number">Control Number:</label>
+        <input type="text" id="control_number" name="control_number" required><br><br>
+
+        <label for="particulars">Particulars:</label>
+        <textarea id="particulars" name="particulars" rows="4" required></textarea><br><br>
+
+        <label for="datetime">Date & Time:</label>
+        <input type="datetime-local" id="datetime" name="datetime" required><br><br>
+
+        <label for="receiver">Name of Receiver:</label>
+        <input type="text" id="receiver" name="receiver" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
