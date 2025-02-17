@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background: #495057;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .datetime {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <a href="#">Dashboard</a>
+        <a href="incoming.html">Incoming</a>
+        <a href="#">Outgoing</a>
+        <a href="#">Logout</a>
+    </div>
+    <div class="content">
+        <div class="header">
+            <div class="logo">LOGO</div>
+            <div class="datetime" id="datetime"></div>
+        </div>
+        <div class="main-content">
+            <h1>Welcome to the Dashboard</h1>
+        </div>
+    </div>
+    
+    <script>
+        function updateDateTime() {
+            const options = { timeZone: "Asia/Manila", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" };
+            const now = new Date().toLocaleString("en-US", options);
+            document.getElementById("datetime").innerText = now;
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+    </script>
+</body>
+</html>

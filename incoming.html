@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Entry Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: none;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Submit Your Information</h2>
+        <form action="https://script.google.com/macros/s/AKfycbwqBA8lRuMs2FR1tFpS9czSaubXzw2V7ONKGa58gw2K48td6_Z7gr_c_28QSrVkEGCb/exec" 
+              method="POST">
+              
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="control_number">Control Number:</label>
+            <input type="text" id="control_number" name="control_number" placeholder="Enter control number" required autocomplete="off">
+
+            <label for="office">Office:</label>
+            <input type="text" id="office" name="office" placeholder="Enter office name" required autocomplete="off">
+
+            <label for="particulars">Particulars:</label>
+            <textarea id="particulars" name="particulars" rows="4" placeholder="Enter details..." required></textarea>
+
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time" required>
+
+            <label for="action">Action:</label>
+            <input type="text" id="action" name="action" placeholder="Enter action taken" required autocomplete="off">
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

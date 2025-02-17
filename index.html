@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            margin-top: 100px; 
+            background-color: #f4f4f4;
+        }
+        .container { 
+            max-width: 300px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        input { 
+            display: block; 
+            width: 100%; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border: 1px solid #ccc; 
+            border-radius: 5px;
+        }
+        .error {
+            border: 1px solid red;
+        }
+        button { 
+            padding: 10px; 
+            width: 100%; 
+            cursor: pointer; 
+            background-color: #28a745; 
+            color: white; 
+            border: none; 
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .show-password-container {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            gap: 5px;
+            font-size: 14px;
+            margin-top: -5px;
+            margin-bottom: 10px;
+        }
+        a { 
+            display: block; 
+            margin-top: 10px; 
+            color: #007bff; 
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form onsubmit="return login(event)">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <div class="show-password-container">
+                <input type="checkbox" id="showPassword" onclick="togglePassword()"> 
+                <label for="showPassword">Show Password</label>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p id="message" style="color: red;"></p>
+        <a href="Forgot_password.html">Forgot Password?</a>
+    </div>
+
+    <script>
+        function login(event) {
+            event.preventDefault(); // Prevent form from submitting normally
+            
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+            const message = document.getElementById("message");
+            
+            // Clear previous errors
+            username.classList.remove("error");
+            password.classList.remove("error");
+            message.innerText = "";
+
+            if (username.value !== "osas-secretary-no.1") {
+                message.innerText = "User doesn't match";
+                username.classList.add("error");
+            } else if (password.value !== "Secretary-chan24") {
+                message.innerText = "Password is incorrect";
+                password.classList.add("error");
+            } else {
+                alert("Login successful!");
+                console.log("Redirecting to dashboard...");
+                setTimeout(() => {
+                    window.location.assign("dashboard.html");
+                }, 500); // Delay to allow alert message to be seen
+            }
+        }
+
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+    </script>
+</body>
+</html>
