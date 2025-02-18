@@ -21,6 +21,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
+            text-align: center;
         }
         h2 {
             text-align: center;
@@ -30,6 +31,7 @@
             font-weight: bold;
             display: block;
             margin-top: 10px;
+            text-align: left;
         }
         input, textarea {
             width: 100%;
@@ -43,24 +45,34 @@
             resize: none;
         }
         button {
-            background-color: #28a745;
-            color: white;
-            border: none;
+            display: block;
+            width: 100%;
             padding: 12px;
             font-size: 16px;
             border-radius: 4px;
             cursor: pointer;
-            width: 100%;
             margin-top: 15px;
+            border: none;
         }
-        button:hover {
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .submit-btn:hover {
             background-color: #218838;
+        }
+        .back-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .back-btn:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Submit Your Information</h2>
+        <h2>Incoming Documents</h2>
         <form action="https://script.google.com/macros/s/AKfycbxsnRCu3mLkglCWddM3Xeq-OgYtkA4t8rlcqKKvXof_QraHdOt7zJ1pBinhsxWD8vrf/exec" 
               method="POST">
               
@@ -82,8 +94,15 @@
             <label for="action">Action:</label>
             <input type="text" id="action" name="action" placeholder="Enter action taken" required autocomplete="off">
 
-            <button type="submit">Submit</button>
+            <button type="submit" class="submit-btn">Submit</button>
         </form>
+        <button class="back-btn" onclick="goBack()">Go Back</button>
     </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </body>
 </html>

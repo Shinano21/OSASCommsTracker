@@ -51,6 +51,39 @@
         .datetime {
             font-size: 14px;
         }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .modal button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .confirm-logout {
+            background: red;
+            color: white;
+        }
+        .cancel-logout {
+            background: gray;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -59,7 +92,7 @@
         <a href="#">Dashboard</a>
         <a href="incoming.html">Incoming</a>
         <a href="outgoing.html">Outgoing</a>
-        <a href="#">Logout</a>
+        <a href="#" onclick="openLogoutModal()">Logout</a>
     </div>
     <div class="content">
         <div class="header">
@@ -71,6 +104,15 @@
         </div>
     </div>
     
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to logout?</p>
+            <button class="confirm-logout" onclick="logout()">Yes</button>
+            <button class="cancel-logout" onclick="closeLogoutModal()">Cancel</button>
+        </div>
+    </div>
+    
     <script>
         function updateDateTime() {
             const options = { timeZone: "Asia/Manila", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" };
@@ -79,6 +121,31 @@
         }
         setInterval(updateDateTime, 1000);
         updateDateTime();
+        
+        function openLogoutModal() {
+            document.getElementById("logoutModal").style.display = "flex";
+        }
+        
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+        
+        function logout() {
+            window.location.href = "index.html";
+            sessionStorage.clear(); // Clear session storage
+            history.pushState(null, null, "index.html");
+            setTimeout(() => {
+                window.onpopstate = function () {
+                    history.pushState(null, null, "index.html");
+                };
+            }, 0);
+        }
+        
+        // Prevent back button navigation
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.pushState(null, null, location.href);
+        };
     </script>
 </body>
 </html>
