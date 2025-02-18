@@ -79,42 +79,41 @@
     </div>
 
     <script>
-        async function login(event) {
-          event.preventDefault();
-      
-          const username = document.getElementById("username").value;
-          const password = document.getElementById("password").value;
-          const message = document.getElementById("message");
-      
-          message.innerText = ""; // Clear previous messages
-      
-          const response = await fetch("https://script.google.com/macros/s/AKfycbyteWjfF0X3SYQcFyKoDkqWSLv-A8lzdYqGg9-kBXRvZVK5XBi_Xo1_Z_kj22JlIwtL/exec", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ action: "login", username, password }),
-          });
-      
-          const result = await response.json();
-      
-          if (result.status === "success") {
-            alert(`Login successful! Role: ${result.role}`);
-            if (result.role === "dean") {
-              window.location.assign("dashboard.html");
-            } else if (result.role === "dean-secretary") {
-              window.location.assign("dashboard.html");
+        function login(event) {
+            event.preventDefault(); // Prevent form from submitting normally
+            
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+            const message = document.getElementById("message");
+            
+            // Clear previous errors
+            username.classList.remove("error");
+            password.classList.remove("error");
+            message.innerText = "";
+
+            if (username.value !== "osas-secretary-no.1") {
+                message.innerText = "User doesn't match";
+                username.classList.add("error");
+            } else if (password.value !== "Secretary-chan24") {
+                message.innerText = "Password is incorrect";
+                password.classList.add("error");
             } else {
-              window.location.assign("default_dashboard.html");
+                alert("Login successful!");
+                console.log("Redirecting to dashboard...");
+                setTimeout(() => {
+                    window.location.assign("dashboard.html");
+                }, 500); // Delay to allow alert message to be seen
             }
-          } else {
-            message.innerText = "Invalid username or password.";
-          }
         }
-      
+
         function togglePassword() {
-          const passwordField = document.getElementById("password");
-          passwordField.type = passwordField.type === "password" ? "text" : "password";
+            const passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
         }
-      </script>
-      
+    </script>
 </body>
 </html>
