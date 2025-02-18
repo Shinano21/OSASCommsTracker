@@ -99,9 +99,9 @@
           if (result.status === "success") {
             alert(`Login successful! Role: ${result.role}`);
             if (result.role === "dean") {
-              window.location.assign("dean_dashboard.html");
+              window.location.assign("dashboard.html");
             } else if (result.role === "dean-secretary") {
-              window.location.assign("secretary_dashboard.html");
+              window.location.assign("dashboard.html");
             } else {
               window.location.assign("default_dashboard.html");
             }
