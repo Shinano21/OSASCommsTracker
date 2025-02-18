@@ -37,15 +37,22 @@
             font-size: 16px;
             border-radius: 4px;
             cursor: pointer;
+            margin-right: 10px;
         }
         button:hover {
             background-color: #218838;
+        }
+        .back-button {
+            background-color: #dc3545;
+        }
+        .back-button:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
 <body>
     <h2>Outgoing Documents</h2>
-    <form action="https://script.google.com/macros/s/AKfycbwo582-TkBxEgPhPVTxK80c7hHm2Ps7IaHY_LGeneqMUeOvsDUvmTlZjAHBnNsYsaOe/exec" 
+    <form action="https://script.google.com/macros/s/AKfycbzIaUsr2j5i8PIzioV0mTCZpa3L9KaEJBR7PWWvV12pACjQKXblW3sUZrw9dHb7F5ZG/exec" 
           method="POST">
         <label for="date">Date:</label>
         <input type="date" id="date" name="date" required><br><br>
@@ -66,6 +73,7 @@
         <input type="text" id="receiver" name="receiver" required><br><br>
 
         <button type="submit">Submit</button>
+        <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Go Back</button>
     </form>
 </body>
 </html>
