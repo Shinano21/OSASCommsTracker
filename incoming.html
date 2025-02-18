@@ -75,7 +75,8 @@
         <h2>Incoming Documents</h2>
         <form action="https://script.google.com/macros/s/AKfycbzn2xGN7IOk8JBucM-BGfJWixSrVyvo384d5yNsq1SaaRaJlhir8n-ozf1yuyjFqSJw/exec" 
               method="POST">
-              
+              <input type="hidden" name="type" value="incoming">  <!-- Change to 'outgoing' for outgoing documents -->
+
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required>
 
