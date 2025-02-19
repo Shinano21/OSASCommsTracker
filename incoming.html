@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Entry Form</title>
+    <title>Data Entry Form - Modified</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,12 +20,13 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             text-align: center;
         }
         h2 {
             text-align: center;
             margin-bottom: 20px;
+            color: #333;
         }
         label {
             font-weight: bold;
@@ -40,9 +41,11 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 16px;
+            box-sizing: border-box;
         }
         textarea {
-            resize: none;
+            resize: vertical;
+            min-height: 100px;
         }
         button {
             display: block;
@@ -53,6 +56,7 @@
             cursor: pointer;
             margin-top: 15px;
             border: none;
+            transition: background-color 0.3s ease;
         }
         .submit-btn {
             background-color: #28a745;
@@ -68,19 +72,29 @@
         .back-btn:hover {
             background-color: #c82333;
         }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Incoming Documents</h2>
-        <form action="https://script.google.com/macros/s/AKfycbzIaUsr2j5i8PIzioV0mTCZpa3L9KaEJBR7PWWvV12pACjQKXblW3sUZrw9dHb7F5ZG/exec" 
-              method="POST">
-              
+        <form id="docForm" action="https://script.google.com/macros/s/AKfycbzOXtBpdYO5ZYxmFPDJNF-2hHaM7zs_emeIukIKVKDJp4RV5LYSyziOGfMXMlTj5tHT/exec" method="POST">
+            <input type="hidden" name="type" value="incoming">
+
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required>
 
+            <div id="dateError" class="error"></div>
+
             <label for="control_number">Control Number:</label>
-            <input type="text" id="control_number" name="control_number" placeholder="Enter control number" required autocomplete="off">
+            <input type="number" id="control_number" name="control_number" placeholder="Enter control number" required>
+
+            <div id="numberError" class="error"></div>
 
             <label for="office">Office:</label>
             <input type="text" id="office" name="office" placeholder="Enter office name" required autocomplete="off">
@@ -92,7 +106,7 @@
             <input type="time" id="time" name="time" required>
 
             <label for="action">Action:</label>
-            <input type="text" id="action" name="action" placeholder="Enter action taken" required autocomplete="off">
+            <input type="text" id="action" name="action" placeholder="Enter action taken" >
 
             <button type="submit" class="submit-btn">Submit</button>
         </form>
@@ -101,8 +115,34 @@
 
     <script>
         function goBack() {
-            window.history.back();
+            window.location.href = 'https://shinano21.github.io/OSASCommsTracker/dashboard.html';
         }
+
+        document.getElementById('docForm').addEventListener('submit', function(event) {
+            let valid = true;
+            let dateField = document.getElementById('date');
+            let dateError = document.getElementById('dateError');
+            let controlNumber = document.getElementById('control_number');
+            let numberError = document.getElementById('numberError');
+
+            if (!dateField.value) {
+                dateError.textContent = 'Please enter a date.';
+                valid = false;
+            } else {
+                dateError.textContent = '';
+            }
+
+            if (!controlNumber.value || isNaN(controlNumber.value)) {
+                numberError.textContent = 'Control number must be a number.';
+                valid = false;
+            } else {
+                numberError.textContent = '';
+            }
+
+            if (!valid) {
+                event.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>
