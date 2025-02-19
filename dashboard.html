@@ -3,365 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OJT</title>
-    <script src="https://kit.fontawesome.com/b6985b5360.js" crossorigin="anonymous"></script>
-
+    <title>Dashboard</title>
     <style>
-    .top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: white;
-        padding: 12px 20px;
-        width: 900px; 
-        border-radius: 8px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-        margin-left: auto; 
-        margin-right: auto; 
-    }
-    
-    .date-time {
-        display: flex;
-        align-items: center;
-        font-size: 16px;
-        font-weight: bold;
-        color: #333;
-    }
-    
-    .date-time i {
-        margin-right: 8px;
-        color: #007bff;
-    }
-
-    .header {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        color: #333;
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .dropdown {
-        position: relative;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        gap: 15px;
-    }
-
-    .dropdown span {
-        cursor: pointer;
-    }
-
-    .dropdown-icon {
-        font-size: 18px;
-        margin-left: 5px;
-    }
-
-    .profile-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: 2px solid white;
-        object-fit: cover;
-        cursor: pointer;
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: 50px;
-        background: white;
-        min-width: 120px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        border-radius: 5px;
-        z-index: 100;
-        text-align: center;
-    }
-
-    .dropdown-content a {
-        color: black;
-        padding: 10px;
-        display: block;
-        text-decoration: none;
-        font-size: 16px;
-    }
-
-    .dropdown-content a:hover {
-        background: #ddd;
-    }
-
-    .dropdown.active .dropdown-content {
-        display: block;
-    }
-
-    body {
+        body {
             margin: 0;
             font-family: Arial, sans-serif;
             display: flex;
             height: 100vh;
-            justify-content: center;
+        }
+        .sidebar {
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            background: linear-gradient(120deg, #01315b 20%, #1d94cc 50%, #fd6f23 80%);
         }
-        .tab-container {
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: -1px;
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            display: block;
+            width: 100%;
+            text-align: center;
         }
-        .tab {
-            padding: 12px 30px;
-            cursor: pointer;
-            font-weight: bold;
-            border: 2px solid transparent;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            background: #ccc;
-            color: #666;
-            transition: all 0.3s ease-in-out;
-            position: relative;
-            top: 8px;
-            font-size: 16px;
+        .sidebar a:hover {
+            background: #495057;
         }
-        .tab.active {
-            background: white;
-            color: #111;
-            border: 2px solid #aaa;
-            border-bottom: none;
-        }
-        .tab:not(.active):hover {
-            background: #bbb;
-        }
-        .container {
-            background: #f2f2f2;
-            width: 900px; /* Made it wider */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        .form-container {
-            background: #ddd;
-            padding: 20px;
-            border-radius: 10px;
-            border-top-left-radius: 0;
-            min-height: 450px; /* Increased height */
+        .content {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 15px;
         }
-        .form-section {
-            display: none;
-            min-height: 450px;
-        }
-        .form-section.active {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .form-group {
-            display: flex;
-    flex-direction: column;
-    width: 100%;
-        }
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        input, select, textarea {
-            width: 100%; /* Ensures uniform width */
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        textarea {
-            resize: none;
-            height: 80px;
-        }
-
-        .row input {
-    width: 100%;
-    height: 40px; /* Adjust height to match other inputs */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-.row .form-group {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-        .buttons {
+        .header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            align-items: center;
         }
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            color: white;
+        .logo {
+            font-size: 20px;
             font-weight: bold;
+        }
+        .datetime {
             font-size: 14px;
         }
-        .btn-record { background: #007bff; }
-        .btn-view { background: #ff6600; }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .modal button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .confirm-logout {
+            background: red;
+            color: white;
+        }
+        .cancel-logout {
+            background: gray;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <div>
-
-        <div class="top-bar">
-            <div class="date-time">
-                <i class="fa-regular fa-calendar"></i>
-                <span id="currentDateTime">Loading...</span>
-            </div>
-            <div class="header">
-            <div class="dropdown">
-                <span>User_1</span>
-                <i class="fa-solid fa-caret-down dropdown-icon" onclick="toggleDropdown()"></i>
-                <div class="dropdown-content">
-                    <a href="#">Log Out</a>
-                </div>
-                </div>
-                <img src="img.png" alt="Profile" class="profile-img">
-            </div>
-            </div>
-      
-        <script>
-            function updateDateTime() {
-                const now = new Date();
-                const options = { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-                document.getElementById('currentDateTime').textContent = now.toLocaleDateString('en-GB', options);
-            }
-            setInterval(updateDateTime, 1000);
-            updateDateTime();
-        </script>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <a href="#">Dashboard</a>
+        <a href="incoming.html">Incoming</a>
+        <a href="outgoing.html">Outgoing</a>
+        <a href="#" onclick="openLogoutModal()">Logout</a>
+    </div>
+    <div class="content">
+        <div class="header">
+            <div class="logo">LOGO</div>
+            <div class="datetime" id="datetime"></div>
+        </div>
+        <div class="main-content">
+            <h1>Welcome to the Dashboard</h1>
+        </div>
+    </div>
     
-        <script>
-            function toggleDropdown() {
-                document.querySelector('.dropdown').classList.toggle('active');
-            }
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to logout?</p>
+            <button class="confirm-logout" onclick="logout()">Yes</button>
+            <button class="cancel-logout" onclick="closeLogoutModal()">Cancel</button>
+        </div>
+    </div>
     
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                const dropdown = document.querySelector('.dropdown');
-                if (!dropdown.contains(event.target)) {
-                    dropdown.classList.remove('active');
-                }
-            });
-        </script>
-
-        <!-- Tabs Outside Container -->
-        <div class="tab-container">
-            <div class="tab active" onclick="switchTab('incoming')">Incoming</div>
-            <div class="tab" onclick="switchTab('outgoing')">Outgoing</div>
-        </div>
-
-        <div class="container">
-            <!-- Form Container -->
-            <div class="form-container">
-                <!-- Incoming Form -->
-                <div id="incoming" class="form-section active">
-                    <div class="form-group">
-                        <label>Date</label>
-                        <input type="date">
-                    </div>
-                    <div class="form-group">
-                        <label>Control Number</label>
-                        <input type="number">
-                    </div>
-                    <div class="form-group">
-                        <label>Office</label>
-                        <select>
-                            <option>Select Office</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Particulars</label>
-                        <textarea placeholder="e.g. Travel Order for BSIT students..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Time Received</label>
-                        <input type="time">
-                    </div>
-                    <div class="form-group">
-                        <label>Action</label>
-                        <input type="text">
-                    </div>
-                    <div class="buttons">
-                        <button class="btn btn-view">View Records</button>
-                        <button class="btn btn-record">Record</button>
-                    </div>
-                </div>
-
-                <!-- Outgoing Form -->
-<div id="outgoing" class="form-section">
-    <div class="form-group">
-        <label>Date</label>
-        <input type="date">
-    </div>
-    <div class="form-group">
-        <label>Control Number</label>
-        <input type="number">
-    </div>
-    <div class="form-group">
-        <label>Office</label>
-        <select>
-            <option>Select Office</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label>Particulars</label>
-        <textarea placeholder="e.g. Travel Order for BSIT students..."></textarea>
-    </div>
-    <div class="form-group">
-        <label>Date Received</label>
-        <input type="date">
-    </div>
-
-    <!-- New Row Layout for Time Received & Receiver -->
-    <div style="display: flex; gap: 10px;">
-        <div class="form-group" style="flex: 1;">
-            <label>Time Received</label>
-            <input type="time">
-        </div>
-        <div class="form-group" style="flex: 1;">
-            <label>Receiver</label>
-            <input type="text">
-        </div>
-    </div>
-
-    <div class="buttons">
-        <button class="btn btn-view">View Records</button>
-        <button class="btn btn-record">Record</button>
-    </div>
-</div>
-
-            </div>
-        </div>
-    </div>
-
     <script>
-        function switchTab(tabName) {
-            // Remove active class from all tabs and forms
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
-
-            // Activate the selected tab and form
-            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
-            document.getElementById(tabName).classList.add('active');
+        function updateDateTime() {
+            const options = { timeZone: "Asia/Manila", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" };
+            const now = new Date().toLocaleString("en-US", options);
+            document.getElementById("datetime").innerText = now;
         }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+        
+        function openLogoutModal() {
+            document.getElementById("logoutModal").style.display = "flex";
+        }
+        
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+        
+        function logout() {
+            window.location.href = "index.html";
+            sessionStorage.clear(); // Clear session storage
+            history.pushState(null, null, "index.html");
+            setTimeout(() => {
+                window.onpopstate = function () {
+                    history.pushState(null, null, "index.html");
+                };
+            }, 0);
+        }
+        
+        // Prevent back button navigation
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.pushState(null, null, location.href);
+        };
     </script>
 </body>
 </html>
