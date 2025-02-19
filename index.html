@@ -5,58 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+        /* General Styles */
         body { 
             font-family: Arial, sans-serif; 
-            text-align: center; 
-            margin-top: 100px; 
             background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
+
+        /* Container */
         .container { 
-            max-width: 300px; 
-            margin: auto; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 10px; 
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-        input { 
-            display: block; 
-            width: 100%; 
-            padding: 10px; 
-            margin: 10px 0; 
-            border: 1px solid #ccc; 
-            border-radius: 5px;
+
+        /* Title */
+        h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: bold;
         }
-        .error {
-            border: 1px solid red;
+
+        /* Input Fields */
+        input {
+            width: 95%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
         }
-        button { 
-            padding: 10px; 
-            width: 100%; 
-            cursor: pointer; 
-            background-color: #28a745; 
-            color: white; 
-            border: none; 
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #218838;
-        }
+
+        /* Show Password Checkbox */
         .show-password-container {
             display: flex;
             align-items: center;
-            justify-content: start;
-            gap: 5px;
+            justify-content: flex-end; /* Moves content to the right */
+            gap: 6px; /* Spacing between checkbox and label */
             font-size: 14px;
-            margin-top: -5px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
-        a { 
-            display: block; 
-            margin-top: 10px; 
-            color: #007bff; 
+        .show-password-container input {
+            width: auto; /* Prevents stretching */
+            margin: 0; /* Ensures proper alignment */
+        }
+
+        /* Login Button */
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Forgot Password Link */
+        a {
+            display: block;
+            margin-top: 12px;
+            color: #007bff;
             text-decoration: none;
+            font-size: 14px;
         }
+
         a:hover {
             text-decoration: underline;
         }
@@ -65,7 +91,11 @@
 <body>
     <div class="container">
         <h2>Login</h2>
+<<<<<<< HEAD
         <form action="https://script.google.com/macros/s/AKfycbzuExyPeZi1k2Ig7ZMNSOD6Ly8neWaGhKdzQLtmAXjwIy-KmYp5pNepwRKbS6qieuRJ/exec" method="post">
+=======
+        <form action="https://script.google.com/macros/s/AKfycbzOXtBpdYO5ZYxmFPDJNF-2hHaM7zs_emeIukIKVKDJp4RV5LYSyziOGfMXMlTj5tHT/exec" method="post" onsubmit="handleLogin(event)">
+>>>>>>> d098b0d58c48e7bdef25973384472a2c10ecd4e5
             <input type="text" id="username" name="username" placeholder="Username" required>
             <input type="password" id="password" name="password" placeholder="Password" required>
             <div class="show-password-container">
@@ -82,6 +112,12 @@
         function togglePassword() {
             const passwordField = document.getElementById("password");
             passwordField.type = passwordField.type === "password" ? "text" : "password";
+        }
+
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent default form submission
+            // Simulate login and redirect
+            setTimeout(() => window.location.href = "dashboard.html", 500);
         }
     </script>
 </body>
