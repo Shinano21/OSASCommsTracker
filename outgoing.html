@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outgoing</title>
+    <title>Outgoing Documents</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,24 +48,33 @@
         .back-button:hover {
             background-color: #c82333;
         }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
     <h2>Outgoing Documents</h2>
-    <form action="https://script.google.com/macros/s/AKfycbwpw1FgZAQ2Iu9GrrvMpw129S3Pv9LaNm8tZtpZUEzwKXiKuRTKPA_3v6ZXJmeNjz3N/exec" 
+    <form id="docForm" action="https://script.google.com/macros/s/AKfycbwpw1FgZAQ2Iu9GrrvMpw129S3Pv9LaNm8tZtpZUEzwKXiKuRTKPA_3v6ZXJmeNjz3N/exec" 
           method="POST">
 
-        <!-- Hidden Field to Indicate the Document Type -->
         <input type="hidden" name="type" value="outgoing">
 
         <label for="date">Date:</label>
         <input type="date" id="date" name="date" required><br><br>
 
+        <div id="dateError" class="error"></div>
+
         <label for="office">Office:</label>
         <input type="text" id="office" name="office" required><br><br>
 
         <label for="control_number">Control Number:</label>
-        <input type="text" id="control_number" name="control_number" required><br><br>
+        <input type="number" id="control_number" name="control_number" required><br><br>
+
+        <div id="numberError" class="error"></div>
 
         <label for="particulars">Particulars:</label>
         <textarea id="particulars" name="particulars" rows="4" required></textarea><br><br>
@@ -77,7 +86,39 @@
         <input type="text" id="receiver" name="receiver" required><br><br>
 
         <button type="submit">Submit</button>
-        <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Go Back</button>
+        <button type="button" class="back-button" onclick="goBack()">Go Back</button>
     </form>
+
+    <script>
+        function goBack() {
+            window.location.href = 'https://shinano21.github.io/OSASCommsTracker/dashboard.html';
+        }
+
+        document.getElementById('docForm').addEventListener('submit', function(event) {
+            let valid = true;
+            let dateField = document.getElementById('date');
+            let dateError = document.getElementById('dateError');
+            let controlNumber = document.getElementById('control_number');
+            let numberError = document.getElementById('numberError');
+
+            if (!dateField.value) {
+                dateError.textContent = 'Please enter a date.';
+                valid = false;
+            } else {
+                dateError.textContent = '';
+            }
+
+            if (!controlNumber.value || isNaN(controlNumber.value)) {
+                numberError.textContent = 'Control number must be a number.';
+                valid = false;
+            } else {
+                numberError.textContent = '';
+            }
+
+            if (!valid) {
+                event.preventDefault();
+            }
+        });
+    </script>
 </body>
 </html>
