@@ -231,13 +231,24 @@
                 <span>User_1</span>
                 <i class="fa-solid fa-caret-down dropdown-icon" onclick="toggleDropdown()"></i>
                 <div class="dropdown-content">
-                    <a href="index.html">Log Out</a>
+                    <a href="#" onclick="logout()">Log Out</a>
                 </div>
                 </div>
                 <img src="img.png" alt="Profile" class="profile-img">
             </div>
             </div>
       
+            <script>
+                function logout() {
+                    // Optional: Clear session storage or perform cleanup if needed
+                    sessionStorage.clear();
+                    localStorage.clear();
+            
+                    // Redirect to logout.html (or any other page)
+                    window.location.href = "logout.html";
+                }
+            </script>
+            
         <script>
             function updateDateTime() {
                 const now = new Date();
