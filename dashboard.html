@@ -200,11 +200,19 @@
     justify-content: center;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+/* Remove spinner for number inputs in Chrome, Safari, Edge, and Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+/* Remove spinner for number inputs in Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield; /* Ensures it works across all browsers */
+}
+
 
         .buttons {
             display: flex;
