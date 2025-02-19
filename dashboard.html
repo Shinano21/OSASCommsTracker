@@ -200,6 +200,20 @@
     justify-content: center;
 }
 
+/* Remove spinner for number inputs in Chrome, Safari, Edge, and Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove spinner for number inputs in Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield; /* Ensures it works across all browsers */
+}
+
+
         .buttons {
             display: flex;
             justify-content: space-between;
@@ -231,7 +245,7 @@
                 <span>User_1</span>
                 <i class="fa-solid fa-caret-down dropdown-icon" onclick="toggleDropdown()"></i>
                 <div class="dropdown-content">
-                    <a href="#" onclick="logout()">Log Out</a>
+                    <a href="index.html" onclick="logout(event)">Log Out</a>
                 </div>
                 </div>
                 <img src="img.png" alt="Profile" class="profile-img">
@@ -239,15 +253,18 @@
             </div>
       
             <script>
-                function logout() {
-                    // Optional: Clear session storage or perform cleanup if needed
+                function logout(event) {
+                    event.preventDefault(); // Prevents the default link behavior
+            
+                    // Clear session storage and local storage
                     sessionStorage.clear();
                     localStorage.clear();
             
-                    // Redirect to logout.html (or any other page)
+                    // Redirect to index.html
                     window.location.href = "index.html";
                 }
             </script>
+            
             
         <script>
             function updateDateTime() {
