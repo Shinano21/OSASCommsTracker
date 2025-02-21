@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        /* Basic CSS styling */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .top-bar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: right;
+        }
+        
+        .container {
+            display: flex;
+            height: calc(100vh - 40px);
+        }
+        
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .search-bar {
+            padding: 8px;
+            width: 300px;
+        }
+        
+        .dropdown {
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span id="datetime"></span>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <a href="dashboardv2.html">Dashboard</a>
+            <a href="incoming.html">Incoming</a>
+            <a href="outgoing.html">Outcoming</a>
+            <a href="index.html">Logout</a>
+        </div>
+        
+        <div class="main-content">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search...">
+                <select class="dropdown">
+                    <option value="incoming">Incoming</option>
+                    <option value="outcoming">Outcoming</option>
+                </select>
+            </div>
+            <!-- Additional dashboard content would go here -->
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to update date and time
+        function updateDateTime() {
+            const now = new Date();
+            const dateTimeString = now.toLocaleString();
+            document.getElementById('datetime').textContent = dateTimeString;
+        }
+        
+        // Update immediately and then every second
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html>
