@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Top Bar (Header) */
+    .top-bar {
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      width: 100%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+    }
+    .top-bar h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .top-bar nav {
+      float: right;
+      margin-top: 5px;
+    }
+    .top-bar nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    .top-bar nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background-color: #444;
+      color: white;
+      padding: 20px 0;
+      position: fixed;
+      height: 100%;
+      top: 60px; /* Below the top bar */
+      left: 0;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar ul li {
+      padding: 15px 20px;
+    }
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+    }
+    .sidebar ul li a:hover {
+      color: #ddd;
+    }
+
+    /* Main Content (Dashboard) */
+    .main-content {
+      margin-left: 250px; /* Width of sidebar */
+      margin-top: 60px; /* Height of top bar */
+      padding: 20px;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* Search Form */
+    .search-form {
+      margin-bottom: 20px;
+    }
+    .search-form input, .search-form select, .search-form button {
+      padding: 8px;
+      margin-right: 10px;
+    }
+
+    /* Results */
+    .results {
+      margin-top: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .no-results {
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <h1>OSASCommsTracker</h1>
+    <nav>
+      <a href="dashboardv2.html">Dashboard</a>
+      <!-- <a href="incoming.html">Incoming</a>
+      <a href="outgoing.html">Outgoing</a> -->
+      <a href="dashboard.html">Communications</a>
+      <a href="?logout=true">Logout</a>
+    </nav>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <ul>
+      <li><a href="dashboardv2.html">Dashboard</a></li>
+      <!-- <li><a href="incoming.html">Incoming Communications</a></li>
+      <li><a href="outgoing.html">Outgoing Communications</a></li> -->
+      <a href="dashboard.html">Communications</a>
+      <li><a href="?logout=true">Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <h2>Dashboard</h2>
+
+      <div class="search-form">
+        <form id="searchForm" action="https://script.google.com/macros/s/AKfycbxpOAyeDxFF7KNZcdrw2K-faDlmEMFKZq10AGPPcWjMQ-Qave87YfGujx1OGesgjqXe/exec" method="post">
+          <input type="text" name="searchTerm" placeholder="Search..." value="">
+          <select name="sheetName">
+            <option value="Incoming">Incoming</option>
+            <option value="Outgoing">Outgoing</option>
+          </select>
+          <button type="submit">Search</button>
+        </form>
+      </div>
+
+      <div class="results" id="results"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      fetch('https://script.google.com/macros/s/AKfycbxpOAyeDxFF7KNZcdrw2K-faDlmEMFKZq10AGPPcWjMQ-Qave87YfGujx1OGesgjqXe/exec', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json()) // Parse JSON response
+      .then(data => {
+        const resultsDiv = document.getElementById('results');
+        if (data.searchResults && data.searchResults.length > 0) {
+          // Build HTML table for results
+          let html = `<h2>${data.sheetName} Search Results</h2><table><thead>`;
+          // Header row
+          data.searchResults[0].forEach(header => {
+            html += `<th>${header}</th>`;
+          });
+          html += `</thead><tbody>`;
+          // Data rows
+          for (let i = 1; i < data.searchResults.length; i++) {
+            html += `<tr>`;
+            data.searchResults[i].forEach(cell => {
+              html += `<td>${cell || ''}</td>`;
+            });
+            html += `</tr>`;
+          }
+          html += `</tbody></table>`;
+          resultsDiv.innerHTML = html;
+        } else {
+          resultsDiv.innerHTML = `<p class="no-results">No results found for "${data.searchTerm || 'your search'}"</p>`;
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>
