@@ -367,48 +367,46 @@ input[type="number"] {
     <form id="outgoingForm" action="https://script.google.com/macros/s/AKfycbzOXtBpdYO5ZYxmFPDJNF-2hHaM7zs_emeIukIKVKDJp4RV5LYSyziOGfMXMlTj5tHT/exec" method="POST">
         <input type="hidden" name="type" value="outgoing">
 
-        <div class="form-group">
-            <label for="date">Date</label>
-            <input type="date" id="dateOutgoing" name="date" required>
-        </div>
-
-        <div class="form-group">
-            <label for="office">Office</label>
-            <input type="text" id="officeOutgoing" name="office" required>
-        </div>
-
-        <div class="form-group">
-            <label for="control_number">Control Number</label>
-            <input type="number" id="control_numberOutgoing" name="control_number" required>
-        </div>
-
-        <div class="form-group">
-            <label for="particulars">Particulars</label>
-            <textarea id="particularsOutgoing" name="particulars" required></textarea>
-        </div>
-
     <div class="form-group">
-            <label for="DATE">Date Received</label>
-            <input type="time" id="dateOutgoing" name="time" required>
-        </div>
+        <label>Date</label>
+        <input type="date">
+    </div>
+    <div class="form-group">
+        <label>Control Number</label>
+        <input type="number">
+    </div>
+    <div class="form-group">
+        <label>Office</label>
+        <select>
+            <option>Select Office</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Particulars</label>
+        <textarea placeholder="e.g. Travel Order for BSIT students..."></textarea>
+    </div>
+    <div class="form-group">
+        <label>Date Received</label>
+        <input type="date">
     </div>
 
     <!-- New Row Layout for Time Received & Receiver -->
     <div style="display: flex; gap: 10px;">
         <div class="form-group" style="flex: 1;">
-                <label for="time">Time Received:</label>
-                <input type="time" id="timeOutgoing" name="time" required>
+            <label>Time Received</label>
+            <input type="time">
         </div>
         <div class="form-group" style="flex: 1;">
-            <label for="receiver">Name of Receiver:</label>
-                    <input type="text" id="receiverOutgoing" name="receiver" required>
-                </div>
-              
+            <label>Receiver</label>
+            <input type="text">
+        </div>
+    </div>
 
-                <div class="button-group">
-                    <button type="button" class="btn btn-view" onclick="viewRecords()">View Records</button>
-                    <button type="submit" class="btn btn-record">Record</button>
-                </div>
+    <div class="buttons">
+        <button class="btn btn-view">View Records</button>
+        <button class="btn btn-record">Record</button>
+    </div>
+</div>
 
             </div>
         </div>
