@@ -218,7 +218,10 @@ input[type="number"] {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
+            width: 100%;  /* Ensures full-width container */
+            padding: 10px; /* Adds some spacing */
         }
+
         .btn {
             padding: 12px 25px;
             border: none;
@@ -227,9 +230,24 @@ input[type="number"] {
             color: white;
             font-weight: bold;
             font-size: 14px;
+            min-width: 120px; /* Ensures consistent button width */
+            text-align: center;
         }
-        .btn-record  { background: #007bff; }
-        .btn-view { background: #ff6600; }
+
+        .btn-record  { 
+            background: #007bff;
+            border: 2px solid #0056b3;
+        }
+
+        .btn-view { 
+            background: #ff6600;
+            border: 2px solid #cc5200;
+        }
+
+        /* Ensure buttons have some space from edges */
+        .button-group button {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
