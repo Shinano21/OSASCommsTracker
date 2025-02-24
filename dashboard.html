@@ -214,7 +214,7 @@ input[type="number"] {
 }
 
 
-        .buttons {
+        .button-group {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
@@ -228,7 +228,7 @@ input[type="number"] {
             font-weight: bold;
             font-size: 14px;
         }
-        .btn-record { background: #007bff; }
+        .btn-record  { background: #007bff; }
         .btn-view { background: #ff6600; }
     </style>
 </head>
@@ -297,41 +297,52 @@ input[type="number"] {
         </div>
 
         <div class="container">
-            <!-- Form Container -->
-            <div class="form-container">
-                <!-- Incoming Form -->
+                            <!-- Incoming Form -->
                 <div id="incoming" class="form-section active">
-                    <div class="form-group">
-                        <label>Date</label>
-                        <input type="date">
+                    <form id="incomingForm" action="https://script.google.com/macros/s/AKfycbzOXtBpdYO5ZYxmFPDJNF-2hHaM7zs_emeIukIKVKDJp4RV5LYSyziOGfMXMlTj5tHT/exec" method="POST">
+                        <input type="hidden" name="type" value="incoming">
+
+                        <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="dateIncoming" name="date" required>
                     </div>
+
                     <div class="form-group">
-                        <label>Control Number</label>
-                        <input type="number">
+                        <label for="control_number">Control Number</label>
+                        <input type="number" id="control_numberIncoming" name="control_number" required>
                     </div>
+
                     <div class="form-group">
-                        <label>Office</label>
-                        <select>
-                            <option>Select Office</option>
+                        <label for="office">Office</label>
+                        <select id="officeIncoming" name="office" required>
+                            <option value="">Select Office</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Finance">Finance</option>
+                            <option value="HR">HR</option>
                         </select>
                     </div>
+
                     <div class="form-group">
-                        <label>Particulars</label>
-                        <textarea placeholder="e.g. Travel Order for BSIT students..."></textarea>
+                        <label for="particulars">Particulars</label>
+                        <textarea id="particularsIncoming" name="particulars" required></textarea>
                     </div>
+                    
                     <div class="form-group">
-                        <label>Time Received</label>
-                        <input type="time">
+                        <label for="time">Time Received</label>
+                        <input type="time" id="timeIncoming" name="time" required>
                     </div>
+                
                     <div class="form-group">
-                        <label>Action</label>
-                        <input type="text">
+                        <label for="action">Action</label>
+                        <input type="text" id="actionIncoming" name="action">
                     </div>
-                    <div class="buttons">
-                        <button class="btn btn-view">View Records</button>
-                        <button class="btn btn-record">Record</button>
-                    </div>
+
+                 <div class="button-group">
+                    <button type="button" class="btn-view" onclick="viewRecords()">View Records</button>
+                    <button type="submit" class="btn-record">Record</button>
                 </div>
+            </form>
+        </div>
 
                 <!-- Outgoing Form -->
 <div id="outgoing" class="form-section">
