@@ -3,106 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Welcome</title>
     <style>
-        /* General Styles */
-        body { 
-            font-family: Arial, sans-serif; 
-            background-color: #f4f4f4;
+        :root {
+            --primary: #4a90e2;
+            --primary-dark: #357abd;
+            --grey: #666;
+            --light-grey: #f4f4f4;
+            --error: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
         }
 
-        /* Container */
-        .container { 
-            width: 350px;
+        .container {
+            max-width: 400px;
+            width: 100%;
             background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 24px;
             text-align: center;
         }
 
-        /* Title */
-        h2 {
+        .form-group {
             margin-bottom: 20px;
-            font-size: 22px;
-            font-weight: bold;
+            position: relative;
         }
 
-        /* Input Fields */
         input {
-            width: 95%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--grey);
             font-size: 14px;
         }
 
-        /* Show Password Checkbox */
         .show-password-container {
             display: flex;
             align-items: center;
-            justify-content: flex-end; /* Moves content to the right */
-            gap: 6px; /* Spacing between checkbox and label */
+            justify-content: flex-end;
+            gap: 8px;
+            margin: 10px 0 20px;
             font-size: 14px;
-            margin-bottom: 12px;
-        }
-        .show-password-container input {
-            width: auto; /* Prevents stretching */
-            margin: 0; /* Ensures proper alignment */
+            color: var(--grey);
         }
 
-        /* Login Button */
         button {
             width: 100%;
-            padding: 12px;
-            background-color: #28a745;
+            padding: 14px;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.1s;
         }
 
         button:hover {
-            background-color: #218838;
+            background: var(--primary-dark);
         }
 
-        /* Forgot Password Link */
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 16px;
+        }
+
         a {
-            display: block;
-            margin-top: 12px;
-            color: #007bff;
+            color: var(--primary);
             text-decoration: none;
             font-size: 14px;
+            transition: color 0.3s;
         }
 
         a:hover {
+            color: var(--primary-dark);
             text-decoration: underline;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-size: 14px;
+            text-align: center;
+            color: var(--error);
+            min-height: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Login</h2>
-    
-        <form action="https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec" method="post" onsubmit="handleLogin(event)">
-            <input type="text" id="username" name="username" placeholder="Username" required>
-            <input type="password" id="password" name="password" placeholder="Password" required>
-            <div class="show-password-container">
-                <input type="checkbox" id="showPassword" onchange="togglePassword()"> 
-                <label for="showPassword">Show Password</label>
+        <h2>Welcome Back</h2>
+        <form action="https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec" 
+              method="post" 
+              onsubmit="return handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" 
+                       id="username" 
+                       name="username" 
+                       placeholder="Enter username" 
+                       required 
+                       autocomplete="username">
             </div>
-            <button type="submit">Login</button>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" 
+                       id="password" 
+                       name="password" 
+                       placeholder="Enter password" 
+                       required 
+                       autocomplete="current-password">
+            </div>
+            <div class="show-password-container">
+                <input type="checkbox" id="showPassword" onchange="togglePassword()">
+                <label for="showPassword">Show password</label>
+            </div>
+            <button type="submit">Sign In</button>
+            <div class="forgot-password">
+                <a href="forgot_password.html">Forgot password?</a>
+            </div>
+            <p id="message"></p>
         </form>
-        <p id="message" style="color: red;"></p>
-        <a href="forgot_password.html">Forgot Password?</a>
     </div>
 
     <script>
@@ -111,10 +185,22 @@
             passwordField.type = passwordField.type === "password" ? "text" : "password";
         }
 
-        function handleLogin(event) {
-            event.preventDefault(); // Prevent default form submission
-            // Simulate login and redirect
-            setTimeout(() => window.location.href = "dashboard.html", 500);
+        async function handleLogin(event) {
+            event.preventDefault();
+            const button = event.target.querySelector('button');
+            const message = document.getElementById('message');
+            
+            button.disabled = true;
+            message.textContent = 'Logging in...';
+            
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                window.location.href = "dashboard.html";
+            } catch (error) {
+                message.textContent = 'Login failed. Please try again.';
+                button.disabled = false;
+            }
         }
     </script>
 </body>
