@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OJT</title>
+    <script src="https://kit.fontawesome.com/b6985b5360.js" crossorigin="anonymous"></script>
+
+    <style>
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        padding: 12px 20px;
+        width: 900px; 
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        margin-left: auto; 
+        margin-right: auto; 
+    }
+    
+    .date-time {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .date-time i {
+        margin-right: 8px;
+        color: #007bff;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: #333;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .dropdown {
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        gap: 15px;
+    }
+
+    .dropdown span {
+        cursor: pointer;
+    }
+
+    .dropdown-icon {
+        font-size: 18px;
+        margin-left: 5px;
+    }
+
+    .profile-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid white;
+        object-fit: cover;
+        cursor: pointer;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 50px;
+        background: white;
+        min-width: 120px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        z-index: 100;
+        text-align: center;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 10px;
+        display: block;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .dropdown-content a:hover {
+        background: #ddd;
+    }
+
+    .dropdown.active .dropdown-content {
+        display: block;
+    }
+
+    body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(120deg, #01315b 20%, #1d94cc 50%, #fd6f23 80%);
+        }
+        .tab-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: -1px;
+        }
+        .tab {
+            padding: 12px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 2px solid transparent;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            background: #ccc;
+            color: #666;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            top: 8px;
+            font-size: 16px;
+        }
+        .tab.active {
+            background: white;
+            color: #111;
+            border: 2px solid #aaa;
+            border-bottom: none;
+        }
+        .tab:not(.active):hover {
+            background: #bbb;
+        }
+        .container {
+            background: #f2f2f2;
+            width: 900px; /* Made it wider */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .form-container {
+            background: #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            border-top-left-radius: 0;
+            min-height: 450px; /* Increased height */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-section {
+            display: none;
+            min-height: 450px;
+        }
+        .form-section.active {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .form-group {
+            display: flex;
+    flex-direction: column;
+    width: 100%;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, select, textarea {
+            width: 100%; /* Ensures uniform width */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        .row input {
+    width: 100%;
+    height: 40px; /* Adjust height to match other inputs */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.row .form-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Remove spinner for number inputs in Chrome, Safari, Edge, and Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove spinner for number inputs in Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield; /* Ensures it works across all browsers */
+}
+
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            width: 100%;  /* Ensures full-width container */
+            padding: 10px; /* Adds some spacing */
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            min-width: 120px; /* Ensures consistent button width */
+            text-align: center;
+        }
+
+        .btn-record  { 
+            background: #007bff;
+            border: 2px solid #0056b3;
+        }
+
+        .btn-view { 
+            background: #ff6600;
+            border: 2px solid #cc5200;
+        }
+
+        /* Ensure buttons have some space from edges */
+        .button-group button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+
+        <div class="top-bar">
+            <div class="date-time">
+                <i class="fa-regular fa-calendar"></i>
+                <span id="currentDateTime">Loading...</span>
+            </div>
+            <div class="header">
+            <div class="dropdown">
+                <span>User_1</span>
+                <i class="fa-solid fa-caret-down dropdown-icon" onclick="toggleDropdown()"></i>
+                <div class="dropdown-content">
+                    <a href="index.html" onclick="logout(event)">Log Out</a>
+                </div>
+                </div>
+                <img src="img.png" alt="Profile" class="profile-img">
+            </div>
+            </div>
+      
+            <script>
+                function logout(event) {
+                    event.preventDefault(); // Prevents the default link behavior
+            
+                    // Clear session storage and local storage
+                    sessionStorage.clear();
+                    localStorage.clear();
+            
+                    // Redirect to index.html
+                    window.location.href = "index.html";
+                }
+            </script>
+            
+            
+        <script>
+            function updateDateTime() {
+                const now = new Date();
+                const options = { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+                document.getElementById('currentDateTime').textContent = now.toLocaleDateString('en-GB', options);
+            }
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
+        </script>
+    
+        <script>
+            function toggleDropdown() {
+                document.querySelector('.dropdown').classList.toggle('active');
+            }
+    
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                const dropdown = document.querySelector('.dropdown');
+                if (!dropdown.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        </script>
+
+        <!-- Tabs Outside Container -->
+        <div class="tab-container">
+            <div class="tab active" onclick="switchTab('incoming')">Incoming</div>
+            <div class="tab" onclick="switchTab('outgoing')">Outgoing</div>
+        </div>
+
+        <div class="container">
+                            <!-- Incoming Form -->
+                <div id="incoming" class="form-section active">
+                    <form id="incomingForm" action="https://script.google.com/macros/s/AKfycbzOXtBpdYO5ZYxmFPDJNF-2hHaM7zs_emeIukIKVKDJp4RV5LYSyziOGfMXMlTj5tHT/exec" method="POST">
+                        <input type="hidden" name="type" value="incoming">
+
+                        <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="dateIncoming" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="control_number">Control Number</label>
+                        <input type="number" id="control_numberIncoming" name="control_number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="office">Office</label>
+                        <select id="officeIncoming" name="office" required>
+                            <option value="">Select Office</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Finance">Finance</option>
+                            <option value="HR">HR</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="particulars">Particulars</label>
+                        <textarea id="particularsIncoming" name="particulars" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time">Time Received</label>
+                        <input type="time" id="timeIncoming" name="time" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="action">Action</label>
+                        <input type="text" id="actionIncoming" name="action">
+                    </div>
+
+                 <div class="button-group">
+                    <button type="button" class="btn btn-view" onclick="viewRecords()">View Records</button>
+                    <button type="submit" class="btn btn-record">Record</button>
+                </div>
+            </form>
+        </div>
+
+                <!-- Outgoing Form -->
+<div id="outgoing" class="form-section">
+    <form id="outgoingForm" action="https://script.google.com/macros/s/AKfycbzOXtBpdYO5ZYxmFPDJNF-2hHaM7zs_emeIukIKVKDJp4RV5LYSyziOGfMXMlTj5tHT/exec" method="POST">
+        <input type="hidden" name="type" value="outgoing">
+
+    <div class="form-group">
+        <label>Date</label>
+        <input type="date">
+    </div>
+    <div class="form-group">
+        <label>Control Number</label>
+        <input type="number">
+    </div>
+    <div class="form-group">
+        <label>Office</label>
+        <select>
+            <option>Select Office</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Particulars</label>
+        <textarea placeholder="e.g. Travel Order for BSIT students..."></textarea>
+    </div>
+    <div class="form-group">
+        <label>Date Received</label>
+        <input type="date">
+    </div>
+
+    <!-- New Row Layout for Time Received & Receiver -->
+    <div style="display: flex; gap: 10px;">
+        <div class="form-group" style="flex: 1;">
+            <label>Time Received</label>
+            <input type="time">
+        </div>
+        <div class="form-group" style="flex: 1;">
+            <label>Receiver</label>
+            <input type="text">
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="btn btn-view">View Records</button>
+        <button class="btn btn-record">Record</button>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Remove active class from all tabs and forms
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+
+            // Activate the selected tab and form
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+    </script>
+</body>
+</html>
