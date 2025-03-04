@@ -128,7 +128,6 @@
             font-size: 0.8125rem;
         }
 
-        /* Media Queries for Responsive Design */
         @media (max-width: 480px) {
             .login-container {
                 padding: 15px;
@@ -193,7 +192,7 @@
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec';
-        const DASHBOARD_URL = 'dashboard.html';
+        const DASHBOARD_URL = 'https://shinano21.github.io/OSASCommsTracker/dashboard.html';
         const INDEX_URL = 'index.html';
 
         document.getElementById('showPassword').addEventListener('change', function() {
@@ -217,7 +216,7 @@
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: "login", username, password })
                 });
 
@@ -237,7 +236,7 @@
                     }, 1000);
                 } else {
                     messageDiv.style.color = 'red';
-                    messageDiv.textContent = 'Invalid username or password.';
+                    messageDiv.textContent = result.message || 'Invalid username or password.';
                 }
             } catch (error) {
                 messageDiv.style.color = 'red';
