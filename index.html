@@ -135,7 +135,6 @@
         const dashboardContainer = document.getElementById('dashboardContainer');
         const messageDiv = document.getElementById('message');
         
-        // Replace with your Google Apps Script Web App URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec';
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -147,6 +146,7 @@
             try {
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
+                    mode: 'cors', // Ensure CORS mode is enabled
                     body: JSON.stringify({
                         action: 'login',
                         username: username,
@@ -156,6 +156,10 @@
                         'Content-Type': 'application/json'
                     }
                 });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
                 
                 const result = await response.json();
                 messageDiv.style.display = 'block';
@@ -177,7 +181,7 @@
                 }
             } catch (error) {
                 messageDiv.style.display = 'block';
-                messageDiv.textContent = 'Error connecting to server';
+                messageDiv.textContent = 'Error connecting to server: ' + error.message;
                 messageDiv.className = 'error';
                 setTimeout(() => {
                     messageDiv.style.display = 'none';
