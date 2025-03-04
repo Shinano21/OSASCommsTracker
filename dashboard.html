@@ -24,7 +24,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Header */
         .top-bar {
             background-color: var(--primary-color);
             color: white;
@@ -57,7 +56,6 @@
             border-radius: 4px;
         }
 
-        /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
             background-color: #34495e;
@@ -89,7 +87,6 @@
             padding-left: 25px;
         }
 
-        /* Main Content */
         .main-content {
             margin-left: var(--sidebar-width);
             margin-top: var(--header-height);
@@ -106,7 +103,6 @@
             margin: 0 auto;
         }
 
-        /* Search Form */
         .search-form {
             display: flex;
             gap: 10px;
@@ -138,7 +134,6 @@
             background-color: #2980b9;
         }
 
-        /* Results */
         .results table {
             width: 100%;
             border-collapse: collapse;
@@ -178,7 +173,14 @@
             color: #7f8c8d;
         }
 
-        /* Responsive Design */
+        .logout-btn {
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b !important;
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -201,7 +203,7 @@
         <nav>
             <a href="dashboardv2.html">Dashboard</a>
             <a href="dashboard.html">Communications</a>
-            <a href="?logout=true">Logout</a>
+            <a href="#" class="logout-btn" onclick="handleLogout()">Logout</a>
         </nav>
     </div>
 
@@ -209,7 +211,7 @@
         <ul>
             <li><a href="dashboardv2.html">Dashboard</a></li>
             <li><a href="dashboard.html">Communications</a></li>
-            <li><a href="?logout=true">Logout</a></li>
+            <li><a href="#" class="logout-btn" onclick="handleLogout()">Logout</a></li>
         </ul>
     </div>
 
@@ -231,6 +233,19 @@
     </div>
 
     <script>
+        // Logout function
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear any session data (if applicable)
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // Redirect to login page
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Search form handling
         document.getElementById('searchForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const resultsDiv = document.getElementById('results');
