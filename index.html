@@ -191,10 +191,8 @@
     </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec'; // Replace with your actual Google Apps Script Web App URL
-        const DASHBOARD_URL = 'dashboard.html';
-        const INDEX_URL = 'index.html';
-
+        const API_URL = window.location.href; // Use the Web App URL dynamically
+        
         document.getElementById('showPassword').addEventListener('change', function() {
             const passwordInput = document.getElementById('password');
             passwordInput.type = this.checked ? 'text' : 'password';
@@ -202,8 +200,23 @@
 
         document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
             e.preventDefault();
-            const contactInfo = document.getElementById('contactInfo');
-            contactInfo.style.display = contactInfo.style.display === 'block' ? 'none' : 'block';
+            const username = document.getElementById('username').value;
+            if (!username) {
+                alert('Please enter your username first.');
+                return;
+            }
+            google.script.run
+                .withSuccessHandler(function(password) {
+                    if (password) {
+                        alert("HERE'S YOUR PASSWORD: " + password + " MAKE SURE YOU DON'T FORGET IT! BAKA!");
+                    } else {
+                        alert("Username not found");
+                    }
+                })
+                .withFailureHandler(function(error) {
+                    alert("Error retrieving password: " + error.message);
+                })
+                .getPassword(username);
         });
 
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
@@ -219,7 +232,8 @@
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: "login", username, password })
+                    body: JSON.stringify({ action: "login", username, password }),
+                    redirect: 'follow'
                 });
 
                 console.log('Response status:', response.status);
@@ -238,7 +252,8 @@
                     messageDiv.style.color = 'green';
                     messageDiv.textContent = 'Login successful! Redirecting...';
                     setTimeout(() => {
-                        window.location.href = DASHBOARD_URL;
+                        // Redirect to dashboard within the same Web App
+                        window.location.href = API_URL + "?page=dashboard";
                     }, 1000);
                 } else {
                     messageDiv.style.color = 'red';
@@ -251,8 +266,9 @@
             }
         });
 
+        // Check if already logged in
         if (localStorage.getItem('authToken') === 'loggedIn') {
-            window.location.href = DASHBOARD_URL;
+            window.location.href = API_URL + "?page=dashboard";
         }
     </script>
 </body>
