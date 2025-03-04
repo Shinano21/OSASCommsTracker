@@ -191,7 +191,7 @@
     </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec';
+        const API_URL = 'YOUR_WEB_APP_URL_HERE'; // Replace with your actual Google Apps Script Web App URL
         const DASHBOARD_URL = 'https://shinano21.github.io/OSASCommsTracker/dashboard.html';
         const INDEX_URL = 'index.html';
 
@@ -213,6 +213,8 @@
             const password = document.getElementById('password').value;
             const messageDiv = document.getElementById('message');
 
+            console.log('Submitting login with:', { username, password });
+
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -220,12 +222,16 @@
                     body: JSON.stringify({ action: "login", username, password })
                 });
 
+                console.log('Response status:', response.status);
+
                 if (!response.ok) {
                     const errorText = await response.text();
+                    console.error('Response error text:', errorText);
                     throw new Error(`HTTP error: ${response.status} - ${errorText}`);
                 }
 
                 const result = await response.json();
+                console.log('Response JSON:', result);
 
                 if (result.success) {
                     localStorage.setItem('authToken', 'loggedIn');
