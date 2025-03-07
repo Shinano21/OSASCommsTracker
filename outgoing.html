@@ -5,89 +5,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Outgoing Documents</title>
     <style>
+        :root {
+            --primary: #28a745;
+            --primary-dark: #218838;
+            --error: #dc3545;
+            --gray: #6c757d;
+            --light-bg: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--light-bg);
+            min-height: 100vh;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 2rem;
+            font-weight: 600;
             text-align: center;
-            margin: 50px;
         }
-        form {
+
+        .form-card {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            text-align: left;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
         }
+
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
         label {
-            font-weight: bold;
+            font-weight: 600;
+            color: #444;
+            font-size: 0.95rem;
         }
+
         input, textarea {
             width: 100%;
-            padding: 8px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
         }
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 10px;
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
         }
-        button:hover {
-            background-color: #218838;
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
         }
-        .back-button {
-            background-color: #dc3545;
-        }
-        .back-button:hover {
-            background-color: #c82333;
-        }
+
         .error {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 5px;
-            text-align: left;
+            color: var(--error);
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .back-btn {
+            background-color: var(--gray);
+            color: white;
+        }
+
+        .back-btn:hover {
+            background-color: #5c636a;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+            .form-card {
+                padding: 1.5rem;
+            }
+            .buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <h2>Outgoing Documents</h2>
-    <form id="docForm" action="https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec" 
-          method="POST">
+    <div class="container">
+        <h2>Outgoing Documents</h2>
+        <div class="form-card">
+            <form id="docForm" action="https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec" method="POST">
+                <input type="hidden" name="type" value="outgoing">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" name="date" required>
+                        <span class="error" id="dateError"></span>
+                    </div>
 
-        <input type="hidden" name="type" value="outgoing">
+                    <div class="form-group">
+                        <label for="office">Office</label>
+                        <input type="text" id="office" name="office" required>
+                        <span class="error" id="officeError"></span>
+                    </div>
 
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" required><br><br>
+                    <div class="form-group">
+                        <label for="control_number">Control Number</label>
+                        <input type="number" id="control_number" name="control_number" required>
+                        <span class="error" id="numberError"></span>
+                    </div>
 
-        <div id="dateError" class="error"></div>
+                    <div class="form-group">
+                        <label for="particulars">Particulars</label>
+                        <textarea id="particulars" name="particulars" required></textarea>
+                        <span class="error" id="particularsError"></span>
+                    </div>
 
-        <label for="office">Office:</label>
-        <input type="text" id="office" name="office" required><br><br>
+                    <div class="form-group">
+                        <label for="date_received">Date Received</label>
+                        <input type="date" id="date_received" name="date_received" required>
+                        <span class="error" id="dateReceivedError"></span>
+                    </div>
 
-        <label for="control_number">Control Number:</label>
-        <input type="number" id="control_number" name="control_number" required><br><br>
+                    <div class="form-group">
+                        <label for="time_received">Time Received</label>
+                        <input type="datetime-local" id="time_received" name="time_received" required>
+                        <span class="error" id="timeReceivedError"></span>
+                    </div>
 
-        <div id="numberError" class="error"></div>
+                    <div class="form-group">
+                        <label for="receiver">Name of Receiver</label>
+                        <input type="text" id="receiver" name="receiver" required>
+                        <span class="error" id="receiverError"></span>
+                    </div>
+                </div>
 
-        <label for="particulars">Particulars:</label>
-        <textarea id="particulars" name="particulars" rows="4" required></textarea><br><br>
-
-        <label for="datetime">Date & Time:</label>
-        <input type="datetime-local" id="datetime" name="time" required><br><br>
-
-        <label for="receiver">Name of Receiver:</label>
-        <input type="text" id="receiver" name="receiver" required><br><br>
-
-        <button type="submit">Submit</button>
-        <button type="button" class="back-button" onclick="goBack()">Go Back</button>
-    </form>
+                <div class="buttons">
+                    <button type="submit" class="submit-btn">Submit</button>
+                    <button type="button" class="back-btn" onclick="goBack()">Go Back</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         function goBack() {
@@ -96,23 +202,64 @@
 
         document.getElementById('docForm').addEventListener('submit', function(event) {
             let valid = true;
-            let dateField = document.getElementById('date');
-            let dateError = document.getElementById('dateError');
-            let controlNumber = document.getElementById('control_number');
-            let numberError = document.getElementById('numberError');
+            
+            // Reset all errors
+            document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
 
-            if (!dateField.value) {
-                dateError.textContent = 'Please enter a date.';
+            // Validate Date
+            const date = document.getElementById('date');
+            if (!date.value) {
+                document.getElementById('dateError').textContent = 'Please select a date';
+                document.getElementById('dateError').style.display = 'block';
                 valid = false;
-            } else {
-                dateError.textContent = '';
             }
 
-            if (!controlNumber.value || isNaN(controlNumber.value)) {
-                numberError.textContent = 'Control number must be a number.';
+            // Validate Office
+            const office = document.getElementById('office');
+            if (!office.value.trim()) {
+                document.getElementById('officeError').textContent = 'Please enter an office';
+                document.getElementById('officeError').style.display = 'block';
                 valid = false;
-            } else {
-                numberError.textContent = '';
+            }
+
+            // Validate Control Number
+            const controlNumber = document.getElementById('control_number');
+            if (!controlNumber.value || isNaN(controlNumber.value)) {
+                document.getElementById('numberError').textContent = 'Please enter a valid number';
+                document.getElementById('numberError').style.display = 'block';
+                valid = false;
+            }
+
+            // Validate Particulars
+            const particulars = document.getElementById('particulars');
+            if (!particulars.value.trim()) {
+                document.getElementById('particularsError').textContent = 'Please enter particulars';
+                document.getElementById('particularsError').style.display = 'block';
+                valid = false;
+            }
+
+            // Validate Date Received
+            const dateReceived = document.getElementById('date_received');
+            if (!dateReceived.value) {
+                document.getElementById('dateReceivedError').textContent = 'Please select a date';
+                document.getElementById('dateReceivedError').style.display = 'block';
+                valid = false;
+            }
+
+            // Validate Time Received
+            const timeReceived = document.getElementById('time_received');
+            if (!timeReceived.value) {
+                document.getElementById('timeReceivedError').textContent = 'Please select a date and time';
+                document.getElementById('timeReceivedError').style.display = 'block';
+                valid = false;
+            }
+
+            // Validate Receiver
+            const receiver = document.getElementById('receiver');
+            if (!receiver.value.trim()) {
+                document.getElementById('receiverError').textContent = 'Please enter a receiver name';
+                document.getElementById('receiverError').style.display = 'block';
+                valid = false;
             }
 
             if (!valid) {
