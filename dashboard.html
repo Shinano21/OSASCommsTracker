@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-    <!---NAV BAR --->
+    <!-- NAV BAR -->
     <div class="nav-bar">
         <div class="nav-brand">
             <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
@@ -17,7 +17,7 @@
             <div class="datetime" id="datetime"></div>
         </div>
     </div>
-    <!---SIDE BAR --->
+    <!-- SIDE BAR -->
     <div class="sidebar">
         <ul>
             <li><a href="addComms.html">Communications</a></li>
@@ -26,7 +26,7 @@
         </ul>
     </div>
 
-    <!--- DASHBOARD CONTENT --->
+    <!-- DASHBOARD CONTENT -->
     <div class="main-content">
         <div class="container">
             <div class="dashboard-header">
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <!--- LOGOUT MODAL --->
+    <!-- LOGOUT MODAL -->
     <div id="logoutModal" class="modal">
         <div class="modal-content">
             <p>Are you sure you want to logout?</p>
@@ -61,6 +61,11 @@
     </div>
 
     <script>
+        // Redirect to login if not logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
@@ -77,8 +82,7 @@
         }
     
         function performLogout() {
-            localStorage.clear();
-            sessionStorage.clear();
+            localStorage.removeItem('isLoggedIn');
             window.location.href = 'index.html';
         }
     
@@ -113,48 +117,47 @@
                 });
                 
                 const data = await response.json();
-            console.log('Full Response Data:', data);
-            console.log('Received searchResults:', data.searchResults);
+                console.log('Full Response Data:', data);
+                console.log('Received searchResults:', data.searchResults);
 
-            if (data.searchResults && data.searchResults.length > 0) {
-                let html = `<h3>${data.sheetName} Search Results</h3><table><thead><tr>`;
-                const headers = data.searchResults[0];
-                console.log('Extracted Headers:', headers);
+                if (data.searchResults && data.searchResults.length > 0) {
+                    let html = `<h3>${data.sheetName} Search Results</h3><table><thead><tr>`;
+                    const headers = data.searchResults[0];
+                    console.log('Extracted Headers:', headers);
 
-                // Verify column count based on sheetName
-                const expectedColumns = data.sheetName === "Incoming" ? 6 : 7;
-                if (headers.length !== expectedColumns) {
-                    console.warn(`Warning: Expected ${expectedColumns} columns for ${data.sheetName}, but got ${headers.length}`);
-                }
-
-                headers.forEach(header => {
-                    html += `<th>${header}</th>`;
-                });
-                html += `</tr></thead><tbody>`;
-
-                for (let i = 1; i < data.searchResults.length; i++) {
-                    html += `<tr>`;
-                    const row = data.searchResults[i];
-                    console.log(`Row ${i} data:`, row);
-                    if (row.length !== headers.length) {
-                        console.warn(`Row ${i} has ${row.length} columns, expected ${headers.length}`);
+                    // Verify column count based on sheetName
+                    const expectedColumns = data.sheetName === "Incoming" ? 6 : 7;
+                    if (headers.length !== expectedColumns) {
+                        console.warn(`Warning: Expected ${expectedColumns} columns for ${data.sheetName}, but got ${headers.length}`);
                     }
-                    headers.forEach((_, index) => {
-                        html += `<td>${row[index] || ''}</td>`;
-                    });
-                    html += `</tr>`;
-                }
-                html += `</tbody></table>`;
-                resultsDiv.innerHTML = html;
-            } else {
-                resultsDiv.innerHTML = `<p class="no-results">No results found for "${data.searchTerm || 'your search'}"</p>`;
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            resultsDiv.innerHTML = '<p class="no-results">An error occurred while fetching results</p>';
-        }
-    });
-</script>
 
+                    headers.forEach(header => {
+                        html += `<th>${header}</th>`;
+                    });
+                    html += `</tr></thead><tbody>`;
+
+                    for (let i = 1; i < data.searchResults.length; i++) {
+                        html += `<tr>`;
+                        const row = data.searchResults[i];
+                        console.log(`Row ${i} data:`, row);
+                        if (row.length !== headers.length) {
+                            console.warn(`Row ${i} has ${row.length} columns, expected ${headers.length}`);
+                        }
+                        headers.forEach((_, index) => {
+                            html += `<td>${row[index] || ''}</td>`;
+                        });
+                        html += `</tr>`;
+                    }
+                    html += `</tbody></table>`;
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<p class="no-results">No results found for "${data.searchTerm || 'your search'}"</p>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultsDiv.innerHTML = '<p class="no-results">An error occurred while fetching results</p>';
+            }
+        });
+    </script>
 </body>
 </html>

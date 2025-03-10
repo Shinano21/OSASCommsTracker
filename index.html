@@ -55,6 +55,11 @@
     </div>
 
     <script>
+        // Redirect to dashboard if already logged in
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+
         function togglePassword() {
             const passwordField = document.getElementById("password");
             passwordField.type = passwordField.type === "password" ? "text" : "password";
@@ -99,7 +104,10 @@
             message.classList.add('success');
 
             try {
+                // Simulate server response (replace with actual validation if needed)
                 await new Promise(resolve => setTimeout(resolve, 1000));
+                // On successful login, set the login state
+                localStorage.setItem('isLoggedIn', 'true');
                 message.textContent = 'Login successful!';
                 message.classList.remove('success');
                 message.classList.add('success');
