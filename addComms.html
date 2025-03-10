@@ -141,6 +141,13 @@
             window.location.href = 'index.html';
         }
 
+        // Prevent back navigation after logout
+        window.addEventListener('popstate', function(event) {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+            }
+        });
+
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
@@ -158,6 +165,7 @@
 
         function performLogout() {
             localStorage.removeItem('isLoggedIn');
+            history.pushState(null, null, 'index.html');
             window.location.href = 'index.html';
         }
 
@@ -192,7 +200,6 @@
             alert('View Records functionality to be implemented.');
         }
 
-        // Optional: Add form submission feedback
         document.getElementById('incomingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             try {

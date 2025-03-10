@@ -66,6 +66,13 @@
             window.location.href = 'index.html';
         }
 
+        // Prevent back navigation after logout
+        window.addEventListener('popstate', function(event) {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+            }
+        });
+
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
@@ -83,6 +90,7 @@
     
         function performLogout() {
             localStorage.removeItem('isLoggedIn');
+            history.pushState(null, null, 'index.html');
             window.location.href = 'index.html';
         }
     
@@ -125,12 +133,6 @@
                     const headers = data.searchResults[0];
                     console.log('Extracted Headers:', headers);
 
-                    // Verify column count based on sheetName
-                    const expectedColumns = data.sheetName === "Incoming" ? 6 : 7;
-                    if (headers.length !== expectedColumns) {
-                        console.warn(`Warning: Expected ${expectedColumns} columns for ${data.sheetName}, but got ${headers.length}`);
-                    }
-
                     headers.forEach(header => {
                         html += `<th>${header}</th>`;
                     });
@@ -140,9 +142,6 @@
                         html += `<tr>`;
                         const row = data.searchResults[i];
                         console.log(`Row ${i} data:`, row);
-                        if (row.length !== headers.length) {
-                            console.warn(`Row ${i} has ${row.length} columns, expected ${headers.length}`);
-                        }
                         headers.forEach((_, index) => {
                             html += `<td>${row[index] || ''}</td>`;
                         });
