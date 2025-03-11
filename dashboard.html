@@ -12,7 +12,7 @@
     <!-- NAV BAR -->
     <div class="nav-bar">
         <div class="nav-brand">
-            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+            <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">☰</button>
             <h1>OSASCommsTracker</h1>
         </div>
         <div class="nav-menu">
@@ -23,9 +23,9 @@
     <!-- SIDE BAR -->
     <div class="sidebar">
         <ul>
-            <li><a href="addComms.html">Communications</a></li>
-            <li><a href="https://docs.google.com/spreadsheets/d/1cGctdRdN28EwrkSIaxh-ngAidtCU8QYuryrsN4Nji3Y/edit?usp=sharing" target="_blank">Sheets</a></li>
-            <li><a href="#" class="logout-btn" onclick="showLogoutModal()">Logout</a></li>
+            <li><a href="addComms.html"><i class="bi bi-chat-dots"></i> Communications</a></li>
+            <li><a href="https://docs.google.com/spreadsheets/d/1cGctdRdN28EwrkSIaxh-ngAidtCU8QYuryrsN4Nji3Y/edit?usp=sharing" target="_blank"><i class="bi bi-table"></i> Sheets</a></li>
+            <li><a href="#" class="logout-btn" onclick="showLogoutModal()"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
         </ul>
     </div>
 
@@ -35,7 +35,7 @@
             <div class="dashboard-header">
                 <h2>Dashboard</h2>
                 <a href="addComms.html">
-                    <button class="add-button">Add Record</button>
+                    <button class="add-button" aria-label="Add New Record">Add Record</button>
                 </a>
             </div>
             <div class="search-form">
