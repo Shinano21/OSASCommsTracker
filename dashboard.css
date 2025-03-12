@@ -274,8 +274,11 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(5, 10, 48, 0.7); /* Use --primary-color with opacity for overlay */
+    background-color: rgba(5, 10, 48, 0.7); /* Semi-transparent overlay with primary color */
     overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
@@ -285,11 +288,11 @@ body {
     border-radius: 12px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Softer shadow for minimalist look */
     text-align: center;
     position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.3s ease-in-out; /* Add a subtle fade-in animation */
+    border: 1px solid #e5e7eb; /* Light border for subtlety */
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -304,64 +307,70 @@ body {
 }
 
 .modal-content p {
-    margin: 0 0 30px 0;
-    font-size: 1.3rem; /* Larger for emphasis */
-    font-weight: 600; /* Bolder text */
+    margin: 0 0 25px 0;
+    font-size: 1.2rem;
+    font-weight: 500;
     color: var(--primary-color);
-    line-height: 1.4;
+    line-height: 1.5;
+    padding: 0 15px; /* Add padding for better text spacing */
 }
 
 .close-btn {
     position: absolute;
     top: 15px;
     right: 15px;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #6b7280;
     cursor: pointer;
     transition: color 0.3s ease;
+    background: none;
+    border: none;
+    padding: 5px;
 }
 
 .close-btn:hover {
-    color: var(--accent-color);
+    color: var(--accent-color); /* Burnt orange for hover */
 }
 
 .modal-buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
+    margin-top: 10px; /* Adjusted spacing */
 }
 
 .modal-button {
-    padding: 12px 35px;
+    padding: 10px 25px;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 500;
     transition: all 0.3s ease;
-    min-width: 110px;
+    min-width: 90px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
 }
 
 .confirm-btn {
-    background-color: var(--accent-color); /* Use burnt orange for confirmation */
+    background-color: var(--primary-color); /* Deep navy blue for Yes */
     color: white;
 }
 
 .confirm-btn:hover {
-    background-color: #a33e0a; /* Darker shade on hover */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    background-color: #1a2a4e; /* Darker navy blue on hover */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(5, 10, 48, 0.2);
 }
 
 .cancel-btn {
-    background-color: var(--secondary-color); /* Use light cyan for cancel */
+    background-color: #e5e7eb; /* Light gray for No */
     color: var(--primary-color);
 }
 
 .cancel-btn:hover {
-    background-color: #4ab8d3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    background-color: #d1d5db; /* Slightly darker gray on hover */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .add-button {
@@ -394,7 +403,6 @@ body {
 
     .sidebar {
         width: 200px; /* Slightly narrower on mobile */
-        z-index: 1001; /* Overlay on top */
     }
 
     .main-content {
@@ -405,17 +413,27 @@ body {
         padding: 15px;
     }
 
-    .search-form input,
-    .search-form select {
-        min-width: 150px;
-        font-size: 0.9rem;
-        padding: 8px;
+    .dashboard-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
     }
 
-    .search-form button,
     .add-button {
-        padding: 8px 16px;
-        font-size: 0.9rem;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+
+    .search-form input,
+    .search-form select,
+    .search-form button {
+        width: 100%;
+        min-width: unset;
+        margin-bottom: 10px;
     }
 
     .results th,
@@ -427,45 +445,50 @@ body {
     .modal-content {
         margin: 25% auto;
         max-width: 340px;
-        padding: 25px;
-    }
-
-    .modal-content p {
-        font-size: 1.2rem;
-    }
-
-    .modal-button {
-        padding: 10px 30px;
-        font-size: 1rem;
-        min-width: 100px;
+        padding: 20px;
     }
 }
 
 @media (max-width: 576px) {
-    .search-form {
-        flex-direction: column;
+    .nav-brand h1 {
+        font-size: 1rem;
+    }
+
+    .add-button {
+        font-size: 0.9rem;
+        padding: 10px;
     }
 
     .search-form input,
-    .search-form select,
-    .search-form button {
-        width: 100%;
-        min-width: unset;
+    .search-form select {
+        font-size: 0.9rem;
+        padding: 8px;
     }
 
-    .dashboard-header {
-        flex-direction: column;
-        gap: 10px;
-        align-items: flex-start;
+    .search-form button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+
+    .results th,
+    .results td {
+        font-size: 0.85rem;
+        padding: 8px;
     }
 
     .modal-content {
-        margin: 35% auto;
-        max-width: 300px;
+        margin: 30% auto;
+        max-width: 280px;
+        padding: 15px;
     }
 
-    .modal-buttons {
-        gap: 15px;
+    .modal-content p {
+        font-size: 1rem;
+    }
+
+    .modal-button {
+        padding: 8px 20px;
+        font-size: 0.9rem;
     }
 }
 
