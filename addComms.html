@@ -107,7 +107,7 @@
                         </div>
                         <div class="form-group">
                             <label for="actionIncoming">Action</label>
-                            <input type="text" id="actionIncoming" name="action" placeholder="Enter action taken">
+                            <input type="text" id="actionIncoming" name="userAction" placeholder="Enter action taken">
                         </div>
                         <div class="button-group">
                             <button type="button" class="btn btn-view" onclick="viewRecords()">
@@ -193,8 +193,8 @@
     </div>
 
     <script>
-        // Check login status
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
+        // Check login status and token
+        if (localStorage.getItem('isLoggedIn') !== 'true' || !localStorage.getItem('authToken')) {
             window.location.href = 'index.html';
         }
 
@@ -203,6 +203,9 @@
                 window.location.href = 'index.html';
             }
         });
+
+        // Retrieve token from localStorage
+        const token = localStorage.getItem('authToken');
 
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
@@ -221,6 +224,7 @@
 
         function performLogout() {
             localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('authToken');
             history.pushState(null, null, 'index.html');
             window.location.href = 'index.html';
         }
@@ -272,14 +276,47 @@
             window.location.href = 'dashboard.html';
         }
 
+        // Incoming Form Submission
         document.getElementById('incomingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             try {
-                const formData = new FormData(this);
+                // Validate required fields
+                const requiredFields = ['date', 'control_number', 'office', 'particulars', 'time'];
+                const missingFields = requiredFields.filter(field => !this[field].value.trim());
+                if (missingFields.length > 0) {
+                    alert('Please fill in all required fields: ' + missingFields.join(', '));
+                    return;
+                }
+
+                // Ensure token exists
+                if (!token) {
+                    alert('Authentication token missing. Please log in again.');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // Prepare data as URL-encoded string to avoid preflight request
+                const data = new URLSearchParams();
+                data.append('action', 'addComms');
+                data.append('token', token);
+                data.append('type', 'incoming');
+                data.append('date', this.date.value);
+                data.append('control_number', this.control_number.value);
+                data.append('office', this.office.value);
+                data.append('particulars', this.particulars.value);
+                data.append('time', this.time.value);
+                data.append('userAction', this.userAction.value || '');
+
                 const response = await fetch(this.action, {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: data.toString()
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const result = await response.json();
                 if (result.success) {
                     showSuccessModal(result.message);
@@ -288,19 +325,52 @@
                     alert('Error adding incoming record: ' + result.message);
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while adding the record.');
+                alert('An error occurred while adding the record: ' + error.message);
             }
         });
 
+        // Outgoing Form Submission
         document.getElementById('outgoingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             try {
-                const formData = new FormData(this);
+                // Validate required fields
+                const requiredFields = ['date', 'control_number', 'office', 'particulars', 'date_received', 'time_received', 'receiver'];
+                const missingFields = requiredFields.filter(field => !this[field].value.trim());
+                if (missingFields.length > 0) {
+                    alert('Please fill in all required fields: ' + missingFields.join(', '));
+                    return;
+                }
+
+                // Ensure token exists
+                if (!token) {
+                    alert('Authentication token missing. Please log in again.');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // Prepare data as URL-encoded string to avoid preflight request
+                const data = new URLSearchParams();
+                data.append('action', 'addComms');
+                data.append('token', token);
+                data.append('type', 'outgoing');
+                data.append('date', this.date.value);
+                data.append('control_number', this.control_number.value);
+                data.append('office', this.office.value);
+                data.append('particulars', this.particulars.value);
+                data.append('date_received', this.date_received.value);
+                data.append('time_received', this.time_received.value);
+                data.append('receiver', this.receiver.value);
+
                 const response = await fetch(this.action, {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: data.toString()
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const result = await response.json();
                 if (result.success) {
                     showSuccessModal(result.message);
@@ -309,8 +379,7 @@
                     alert('Error adding outgoing record: ' + result.message);
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while adding the record.');
+                alert('An error occurred while adding the record: ' + error.message);
             }
         });
     </script>

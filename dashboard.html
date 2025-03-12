@@ -40,10 +40,10 @@
             </div>
             <div class="search-form">
                 <form id="searchForm">
-                    <input type="text" name="searchTerm" placeholder="Search..." required>
-                    <select name="sheetName">
-                        <option value="Incoming">Incoming</option>
-                        <option value="Outgoing">Outgoing</option>
+                    <input type="text" name="searchTerm" placeholder="Search Particulars or Control Number..." required>
+                    <select name="sheetName" id="sheetSelect" onchange="loadSheetData()">
+                        <option value="incoming">Incoming</option>
+                        <option value="outgoing">Outgoing</option>
                     </select>
                     <button type="submit">Search</button>
                 </form>
@@ -93,6 +93,7 @@
     
         function performLogout() {
             localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('authToken');
             history.pushState(null, null, 'index.html');
             window.location.href = 'index.html';
         }
@@ -114,46 +115,101 @@
     
         updateDateTime();
         setInterval(updateDateTime, 1000);
-    
+
+        // Function to render table data
+        function renderTable(data, sheetName) {
+            const resultsDiv = document.getElementById('results');
+            if (data && data.length > 0) {
+                let html = `<h3>${sheetName.charAt(0).toUpperCase() + sheetName.slice(1)} Records</h3><table><thead><tr>`;
+                const headers = data[0];
+                headers.forEach(header => {
+                    html += `<th>${header}</th>`;
+                });
+                html += `</tr></thead><tbody>`;
+
+                for (let i = 1; i < data.length; i++) {
+                    html += `<tr>`;
+                    const row = data[i];
+                    headers.forEach((_, index) => {
+                        html += `<td>${row[index] || ''}</td>`;
+                    });
+                    html += `</tr>`;
+                }
+                html += `</tbody></table>`;
+                resultsDiv.innerHTML = html;
+            } else {
+                resultsDiv.innerHTML = `<p class="no-results">No records found in ${sheetName}</p>`;
+            }
+        }
+
+        // Function to load sheet data when dropdown changes
+        async function loadSheetData() {
+            const sheetName = document.getElementById('sheetSelect').value;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading">Loading...</div>';
+
+            try {
+                const data = new URLSearchParams();
+                data.append('action', 'getData');
+                data.append('sheetName', sheetName);
+                data.append('token', localStorage.getItem('authToken'));
+
+                const response = await fetch('https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: data.toString()
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    renderTable(result.data, sheetName);
+                } else {
+                    resultsDiv.innerHTML = `<p class="no-results">Error: ${result.message}</p>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultsDiv.innerHTML = '<p class="no-results">An error occurred while fetching data</p>';
+            }
+        }
+
+        // Load initial data on page load (default to Incoming)
+        document.addEventListener('DOMContentLoaded', loadSheetData);
+
+        // Search functionality
         document.getElementById('searchForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = '<div class="loading">Loading...</div>';
-    
+
             try {
-                const formData = new FormData(this);
+                const sheetName = document.getElementById('sheetSelect').value;
+                const searchTerm = this.searchTerm.value;
+
+                const data = new URLSearchParams();
+                data.append('action', 'search');
+                data.append('sheetName', sheetName);
+                data.append('searchTerm', searchTerm);
+                data.append('token', localStorage.getItem('authToken'));
+
                 const response = await fetch('https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec', {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: data.toString()
                 });
-                
-                const data = await response.json();
-                console.log('Full Response Data:', data);
-                console.log('Received searchResults:', data.searchResults);
 
-                if (data.searchResults && data.searchResults.length > 0) {
-                    let html = `<h3>${data.sheetName} Search Results</h3><table><thead><tr>`;
-                    const headers = data.searchResults[0];
-                    console.log('Extracted Headers:', headers);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
-                    headers.forEach(header => {
-                        html += `<th>${header}</th>`;
-                    });
-                    html += `</tr></thead><tbody>`;
-
-                    for (let i = 1; i < data.searchResults.length; i++) {
-                        html += `<tr>`;
-                        const row = data.searchResults[i];
-                        console.log(`Row ${i} data:`, row);
-                        headers.forEach((_, index) => {
-                            html += `<td>${row[index] || ''}</td>`;
-                        });
-                        html += `</tr>`;
-                    }
-                    html += `</tbody></table>`;
-                    resultsDiv.innerHTML = html;
+                const result = await response.json();
+                if (result.success && result.searchResults && result.searchResults.length > 0) {
+                    renderTable(result.searchResults, sheetName);
                 } else {
-                    resultsDiv.innerHTML = `<p class="no-results">No results found for "${data.searchTerm || 'your search'}"</p>`;
+                    resultsDiv.innerHTML = `<p class="no-results">No results found for "${searchTerm}" in ${sheetName}</p>`;
                 }
             } catch (error) {
                 console.error('Error:', error);
