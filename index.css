@@ -187,35 +187,99 @@ a:hover {
     background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
+    z-index: 1000;
     animation: fadeInModal 0.3s ease-in-out;
 }
 
 .modal-content {
     background: white;
-    padding: calc(var(--spacing-unit) * 3);
-    border-radius: 8px;
-    max-width: 360px;
+    border-radius: 12px; /* Match login container */
+    max-width: 400px;
     width: 90%;
-    text-align: center;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow); /* Match login container shadow */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary);
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+    color: white;
+    font-weight: 600;
     position: relative;
 }
 
-.modal-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.modal-title {
+    margin: 0;
     font-size: 20px;
-    color: var(--grey);
-    cursor: pointer;
-    border: none;
+    text-align: center;
+    flex: 1; /* Center the title */
+}
+
+.modal-close {
+    font-size: 20px;
+    color: white;
     background: none;
+    border: none;
+    cursor: pointer;
     padding: 5px;
     transition: color 0.2s ease-in-out;
 }
 
 .modal-close:hover {
+    color: #ddd;
+}
+
+.modal-body {
+    padding: calc(var(--spacing-unit) * 3);
+    text-align: center;
+    color: var(--grey);
+}
+
+.modal-body p {
+    margin: calc(var(--spacing-unit)) 0;
+    font-size: 16px;
+}
+
+.modal-body .contact-number {
+    margin-top: calc(var(--spacing-unit));
+    font-size: 18px;
+}
+
+.modal-body .contact-number strong {
     color: var(--primary);
+    font-weight: 600;
+}
+
+.modal-footer {
+    padding: calc(var(--spacing-unit) * 2);
+    text-align: center;
+}
+
+.modal-okay {
+    width: 100%;
+    padding: calc(var(--spacing-unit) * 2); /* Match Sign In button */
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px; /* Match Sign In button */
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.modal-okay:hover:not(:disabled) {
+    background: var(--primary-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-okay:active:not(:disabled) {
+    transform: scale(0.98);
 }
 
 @keyframes fadeInModal {

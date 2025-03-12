@@ -49,13 +49,21 @@
         </form>
     </div>
 
-    <!-- Modal -->
-    <div id="forgotModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="hideModal()">×</button>
-            <p>Please Contact your System Administrator: <strong>09380828470</strong></p>
+<!-- Modal -->
+<div id="forgotModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle" class="modal-title">Forgot Password</h3>
+        </div>
+        <div class="modal-body">
+            <p>Please contact your System Administrator for assistance:</p>
+            <p class="contact-number"><strong>09380828470</strong></p>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-okay" onclick="hideModal()">Okay</button>
         </div>
     </div>
+</div>
 
     <script>
         // Redirect to dashboard if already logged in
@@ -68,21 +76,44 @@
             passwordField.type = passwordField.type === "password" ? "text" : "password";
         }
 
-        function showModal() {
-            document.getElementById("forgotModal").style.display = "flex";
+                function showModal() {
+            const modal = document.getElementById("forgotModal");
+            modal.style.display = "flex";
+            modal.setAttribute("aria-hidden", "false");
+            const firstFocusable = modal.querySelector(".modal-close"); // Focus on close button
+            firstFocusable.focus();
         }
 
         function hideModal() {
-            document.getElementById("forgotModal").style.display = "none";
+            const modal = document.getElementById("forgotModal");
+            modal.style.display = "none";
+            modal.setAttribute("aria-hidden", "true");
+            document.querySelector(".forgot-password a").focus(); // Return focus to Forgot password link
         }
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
             const modal = document.getElementById("forgotModal");
-            if (event.target === modal) {
+            if (event.key === 'Escape' && modal.style.display === "flex") {
                 hideModal();
             }
-        }
+        });
+
+        // Trap focus inside modal
+        document.getElementById("forgotModal").addEventListener('keydown', function(event) {
+            if (event.key === 'Tab') {
+                const focusable = this.querySelectorAll('button');
+                const firstFocusable = focusable[0];
+                const lastFocusable = focusable[focusable.length - 1];
+                if (event.shiftKey && document.activeElement === firstFocusable) {
+                    event.preventDefault();
+                    lastFocusable.focus();
+                } else if (!event.shiftKey && document.activeElement === lastFocusable) {
+                    event.preventDefault();
+                    firstFocusable.focus();
+                }
+            }
+        });
 
         async function handleLogin(event) {
             event.preventDefault();

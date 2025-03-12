@@ -17,8 +17,9 @@ body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f7fa; /* Softer background */
+    background-color: #f4f7fa;
     min-height: 100vh;
+    overflow-y: hidden; /* Hide vertical scrollbar */
 }
 
 .nav-bar {
@@ -122,9 +123,17 @@ body {
 
 .main-content {
     margin-left: 0;
-    margin-top: var(--header-height);
+    margin-top: var(--header-height); /* Offset by the height of the nav-bar */
     padding: 30px 15px;
     transition: margin-left 0.3s ease;
+    min-height: calc(100vh - var(--header-height)); /* Fit within viewport height */
+    max-height: calc(100vh - var(--header-height)); /* Prevent overflow */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align to the top */
+    width: 100%;
+    overflow-y: auto; /* Allow scrolling within main-content if needed */
+    box-sizing: border-box;
 }
 
 .main-content.sidebar-active {
@@ -136,8 +145,9 @@ body {
     padding: 0; /* Padding will be handled by form-container */
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    max-width: 800px; /* Slightly narrower for better focus */
-    margin: 0 auto;
+    max-width: 800px; /* Limit the width to center the form */
+    width: 100%; /* Ensure it takes full available width up to max-width */
+    margin: 0 auto; /* Center the container horizontally */
 }
 
 .tab-container {
@@ -180,14 +190,16 @@ body {
     flex-direction: column;
     gap: 20px;
     border: 1px solid #e9ecef;
-    overflow: hidden; /* Prevent scrolling if content overflows */
-    max-height: 100%; /* Allow content to fit naturally */
+    max-height: 100%; /* Fit within parent */
+    width: 100%;
+    overflow-y: auto; /* Allow internal scrolling if needed */
 }
 
 .form-section {
     display: none;
     flex-direction: column;
     gap: 20px;
+    width: 100%;
 }
 
 .form-section.active {
@@ -199,6 +211,11 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+.form-section .form-group {
+    flex: 1; /* Makes sure each form-group takes equal space */
+    min-width: 0; /* Prevents overflow issues with flex items */
 }
 
 label {
@@ -340,7 +357,19 @@ button.btn.btn-record:hover {
         justify-content: center;
         padding: 12px 20px; /* Slightly smaller padding for smaller screens */
     }
+
+    .form-section [style*="display: flex"] {
+        flex-direction: column; /* Stack fields vertically on small screens */
+        gap: 10px; /* Adjust gap for smaller screens */
+    }
+
+    .form-section .form-group {
+        flex: none; /* Reset flex for vertical stacking */
+        width: 100%; /* Ensure full width on small screens */
+    }
 }
+
+
 
 /* Modal Styles */
 .modal {
