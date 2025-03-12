@@ -227,6 +227,46 @@
         // Retrieve token from localStorage
         const token = localStorage.getItem('authToken');
 
+        document.addEventListener('DOMContentLoaded', () => {
+
+    // Ensure the logout modal is hidden on page load
+    document.getElementById('logoutModal').style.display = 'none';
+
+    // Ensure the logout modal is hidden on page load
+    const logoutModal = document.getElementById('logoutModal');
+    if (logoutModal) {
+        logoutModal.style.display = 'none';
+        console.log('Logout modal hidden on page load');
+    } else {
+        console.error('Logout modal element not found');
+    }
+
+    // Dashboard link handler
+    const dashboardLink = document.querySelector('.nav-menu a[href="dashboard.html"]');
+    if (dashboardLink) {
+        dashboardLink.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default navigation
+            e.stopPropagation(); // Stop event propagation
+            console.log('Dashboard link clicked'); // Debug log
+            // Optionally redirect to dashboard.html manually
+            window.location.href = 'dashboard.html';
+        });
+    }
+
+// Logout button handler (already present, but ensure it's specific)
+const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showLogoutModal();
+        });
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+});
+
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
@@ -235,19 +275,28 @@
         }
 
         function showLogoutModal() {
-            document.getElementById('logoutModal').style.display = 'block';
+        console.log('showLogoutModal called from:', new Error().stack);
+        const logoutModal = document.getElementById('logoutModal');
+        if (logoutModal) {
+            logoutModal.style.display = 'block';
+            console.log('Logout modal displayed');
         }
+    }
 
-        function hideLogoutModal() {
-            document.getElementById('logoutModal').style.display = 'none';
+    function hideLogoutModal() {
+        const logoutModal = document.getElementById('logoutModal');
+        if (logoutModal) {
+            logoutModal.style.display = 'none';
+            console.log('Logout modal hidden');
         }
+    }
 
-        function performLogout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('authToken');
-            history.pushState(null, null, 'index.html');
-            window.location.href = 'index.html';
-        }
+    function performLogout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('authToken');
+        history.pushState(null, null, 'index.html');
+        window.location.href = 'index.html';
+    }
 
         function updateDateTime() {
         const now = new Date();
@@ -264,9 +313,7 @@
         document.getElementById('datetime').textContent = formattedDateTime;
     }
 
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-
+    
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
@@ -290,9 +337,15 @@
             document.getElementById('successOverlay').style.display = 'none';
         }
 
-        function goToDashboard() {
+                function goToDashboard() {
             hideSuccessModal();
-            window.location.href = 'dashboard.html';
+            // Force hide the logout modal before redirecting
+        const logoutModal = document.getElementById('logoutModal');
+        if (logoutModal) {
+            logoutModal.style.display = 'none';
+            console.log('Logout modal forced hidden before redirect from goToDashboard');
+        }
+        window.location.href = 'dashboard.html';
         }
 
         // Incoming Form Submission
@@ -401,6 +454,7 @@
                 alert('An error occurred while adding the record: ' + error.message);
             }
         });
+        
     </script>
 </body>
 </html>

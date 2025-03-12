@@ -20,6 +20,7 @@
             <div class="datetime" id="datetime"></div>
         </div>
     </div>
+
     <!-- SIDE BAR -->
     <div class="sidebar">
         <ul>
@@ -114,6 +115,35 @@
     }
 }
 
+// Ensure the Dashboard link does not trigger logout
+document.addEventListener('DOMContentLoaded', () => {
+    // Prevent default behavior for navigation links if needed
+    const dashboardLink = document.querySelector('.nav-menu a[href="dashboard.html"]');
+    if (dashboardLink) {
+        dashboardLink.addEventListener('click', (e) => {
+            // Optional: Prevent default navigation if you want to handle it via JavaScript
+            e.preventDefault();
+            // Add custom dashboard loading logic here if needed
+            loadSection('communications'); // Reload dashboard content
+        });
+    }
+});
+
+
+    // Ensure logout is only triggered by the logout button
+    const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default anchor behavior
+            showLogoutModal();
+        });
+    }
+
+    // Load default section and data
+    loadSection('communications');
+    loadSheetData();
+
+
                 // Add event listeners to sidebar links
         document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -130,7 +160,7 @@
             loadSheetData(); // Load initial data
         });
     
-        function showLogoutModal() {
+                function showLogoutModal() {
             document.getElementById('logoutModal').style.display = 'block';
         }
     
