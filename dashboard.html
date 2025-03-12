@@ -38,7 +38,7 @@
                     <button class="add-button" aria-label="Add New Record">Add Record</button>
                 </a>
             </div>
-            <div class="search-form">
+            <div class="search-form" id="searchFormContainer">
                 <form id="searchForm">
                     <input type="text" name="searchTerm" placeholder="Search Particulars or Control Number..." required>
                     <select name="sheetName" id="sheetSelect" onchange="loadSheetData()">
@@ -53,15 +53,16 @@
     </div>
 
     <!-- LOGOUT MODAL -->
-    <div id="logoutModal" class="modal">
-        <div class="modal-content">
-            <p>Are you sure you want to logout?</p>
-            <div class="modal-buttons">
-                <button class="modal-button confirm-btn" onclick="performLogout()">Yes</button>
-                <button class="modal-button cancel-btn" onclick="hideLogoutModal()">No</button>
-            </div>
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="hideLogoutModal()">×</span>
+        <p>Are you sure you want to logout?</p>
+        <div class="modal-buttons">
+            <button class="modal-button confirm-btn" onclick="performLogout()">Yes</button>
+            <button class="modal-button cancel-btn" onclick="hideLogoutModal()">No</button>
         </div>
     </div>
+</div>
 
     <script>
         // Redirect to login if not logged in
@@ -77,11 +78,57 @@
         });
 
         function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            const mainContent = document.querySelector('.main-content');
-            sidebar.classList.toggle('active');
-            mainContent.classList.toggle('sidebar-active');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        sidebar.classList.toggle('active');
+        mainContent.classList.toggle('sidebar-active');
         }
+
+        function loadSection(section) {
+        const mainContent = document.getElementById('mainContent');
+        const searchFormContainer = document.getElementById('searchFormContainer');
+        const resultsDiv = document.getElementById('results');
+
+        if (section === 'communications') {
+        // Show communications form or data
+        searchFormContainer.style.display = 'block';
+        resultsDiv.innerHTML = '<div class="loading">Loading Communications...</div>';
+        // Simulate loading communications data (replace with actual API call if needed)
+        setTimeout(() => {
+            resultsDiv.innerHTML = `
+                <h3>Communications</h3>
+                <p>Form or data for communications will be displayed here.</p>
+            `;
+        }, 1000);
+    } else if (section === 'sheets') {
+        // Redirect to Google Sheets or embed it
+        searchFormContainer.style.display = 'none';
+        resultsDiv.innerHTML = `
+            <h3>Sheets</h3>
+            <iframe src="https://docs.google.com/spreadsheets/d/1cGctdRdN28EwrkSIaxh-ngAidtCU8QYuryrsN4Nji3Y/edit?usp=sharing" width="100%" height="600" frameborder="0"></iframe>
+        `;
+    } else {
+        // Default to dashboard
+        searchFormContainer.style.display = 'block';
+        loadSheetData(); // Load default data (e.g., incoming)
+    }
+}
+
+                // Add event listeners to sidebar links
+        document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                loadSection(section);
+                toggleSidebar(); // Close sidebar after selection (optional)
+            });
+        });
+
+        // Load default section on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSection('communications'); // Default to communications
+            loadSheetData(); // Load initial data
+        });
     
         function showLogoutModal() {
             document.getElementById('logoutModal').style.display = 'block';

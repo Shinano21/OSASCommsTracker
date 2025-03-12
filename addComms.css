@@ -125,19 +125,20 @@ body {
     margin-left: 0;
     margin-top: var(--header-height); /* Offset by the height of the nav-bar */
     padding: 30px 15px;
-    transition: margin-left 0.3s ease;
+    transition: margin-left 0.3s ease, width 0.3s ease; /* Add width transition for smooth resizing */
     min-height: calc(100vh - var(--header-height)); /* Fit within viewport height */
     max-height: calc(100vh - var(--header-height)); /* Prevent overflow */
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: flex-start; /* Align to the top */
-    width: 100%;
+    width: 100%; /* Full width initially */
     overflow-y: auto; /* Allow scrolling within main-content if needed */
     box-sizing: border-box;
 }
 
 .main-content.sidebar-active {
     margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width)); /* Adjust the width to account for the sidebar */
 }
 
 .container {
@@ -147,7 +148,7 @@ body {
     box-shadow: var(--box-shadow);
     max-width: 800px; /* Limit the width to center the form */
     width: 100%; /* Ensure it takes full available width up to max-width */
-    margin: 0 auto; /* Center the container horizontally */
+    box-sizing: border-box; /* Ensure padding and borders are included in width */
 }
 
 .tab-container {
@@ -445,6 +446,7 @@ button.btn.btn-record:hover {
 
     .main-content.sidebar-active {
         margin-left: 0;
+        width: 100%; /* Reset width to full on smaller screens */
     }
 
     .sidebar {
@@ -452,7 +454,7 @@ button.btn.btn-record:hover {
     }
 
     .container {
-        max-width: 100%;
+        max-width: 100%; /* Allow container to take full width on small screens */
     }
 
     .form-container {
