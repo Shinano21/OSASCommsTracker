@@ -1,14 +1,14 @@
 :root {
-    --primary-color: #2c3e50; /* Navy blue for header */
-    --secondary-color: #3498db; /* Bright blue for accents */
-    --success-color: #28a745; /* Green for positive actions */
-    --neutral-color: #6c757d; /* Gray for neutral actions */
-    --sidebar-width: 250px;
-    --header-height: 60px;
+    --primary-color: #050A30;
+    --secondary-color: #62D1ED;
+    --accent-color: #C14B0C;
+    --success-color: #28a745;
+    --neutral-color: #6c757d;
+    --sidebar-width: 230px;
+    --header-height: 70px;
     --border-radius: 8px;
     --box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
 }
-
 
 * {
     box-sizing: border-box;
@@ -20,6 +20,7 @@ body {
     padding: 0;
     background-color: #f4f7fa;
     min-height: 100vh;
+    overflow-y: hidden;
 }
 
 .nav-bar {
@@ -132,13 +133,22 @@ body {
 
 .main-content {
     margin-left: 0;
-    margin-top: var(--header-height); /* Offset by the height of the nav-bar */
+    margin-top: var(--header-height);
     padding: 30px 15px;
-    transition: margin-left 0.3s ease;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    min-height: calc(100vh - var(--header-height));
+    max-height: calc(100vh - var(--header-height));
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .main-content.sidebar-active {
     margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
 }
 
 .container {
@@ -146,8 +156,9 @@ body {
     padding: 0;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    max-width: 800px; /* Slightly narrower for better focus */
-    margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .tab-container {
@@ -190,8 +201,9 @@ body {
     flex-direction: column;
     gap: 20px;
     border: 1px solid #e9ecef;
-    overflow: hidden; /* Prevent scrolling if content overflows */
-    max-height: 100%; /* Allow content to fit naturally */
+    max-height: 100%;
+    width: 100%;
+    overflow-y: auto;
 }
 
 .form-section {
@@ -209,6 +221,11 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+.form-section .form-group {
+    flex: 1;
+    min-width: 0;
 }
 
 label {
@@ -294,72 +311,17 @@ textarea {
 }
 
 .btn-view:hover {
-    background: orange; /* Darker gray on hover */
-    transform: translateY(-2px); /* Slight lift effect on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-
-/* Base Button Styles */
-button.btn {
-    padding: 14px 30px; /* Increased padding for better click area */
-    border: none !important; /* Override Bootstrap's border */
-    cursor: pointer;
-    border-radius: 6px; /* Slightly larger border-radius for modern look */
-    color: white !important; /* Ensure text color is white */
-    font-weight: 600;
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px; /* Increased gap between icon and text */
-    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+.button-text {
+    margin-left: 5px;
 }
 
-/* View Records Button */
-button.btn.btn-view {
-    background: var(--neutral-color) !important; /* Gray for neutral action */
-    border: none !important; /* Ensure no border */
-}
-
-/* View Records Button Hover */
-button.btn.btn-view:hover {
-    background: #5a6268 !important; /* Darker gray on hover */
-    transform: translateY(-2px); /* Slight lift effect on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-}
-
-/* Record Button */
-button.btn.btn-record {
-    background: var(--success-color) !important; /* Green for positive action */
-    border: none !important; /* Ensure no border */
-}
-
-/* Record Button Hover */
-button.btn.btn-record:hover {
-    background: #218838 !important; /* Darker green on hover */
-    transform: translateY(-2px); /* Slight lift effect on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .button-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    button.btn {
-        width: 100%;
-        justify-content: center;
-        padding: 12px 20px; /* Slightly smaller padding for smaller screens */
-    }
-}
-
-/* Modal Styles */
 .modal {
-    display: none;
+    display: none !important;
     position: fixed;
     z-index: 1001;
     left: 0;
@@ -380,25 +342,49 @@ button.btn.btn-record:hover {
     border-radius: 12px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
+    position: relative;
+    border: 1px solid #e5e7eb;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .modal-content p {
-    margin: 0 0 20px 0;
-    font-size: 1.1rem;
-    color: #333;
+    margin: 0 0 25px 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    line-height: 1.5;
+    padding: 0 15px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    padding: 5px;
 }
 
 .close-btn:hover {
-    color: var(--accent-color); /* Burnt orange for hover */
+    color: var(--accent-color);
 }
-
 
 .modal-buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
+    margin-top: 10px;
 }
 
 .modal-button {
@@ -407,53 +393,77 @@ button.btn.btn-record:hover {
     border-radius: 6px;
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.3s ease;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 90px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .confirm-btn {
-    background-color: #dc3545;
+    background-color: var(--primary-color);
     color: white;
 }
 
 .confirm-btn:hover {
-    background-color: #c82333;
+    background-color: #1a2a4e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(5, 10, 48, 0.2);
 }
 
 .cancel-btn {
-    background-color: var(--neutral-color);
-    color: white;
+    background-color: #e5e7eb;
+    color: var(--primary-color);
 }
 
 .cancel-btn:hover {
-    background-color: #5a6268;
+    background-color: #d1d5db;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.logout-btn:hover {
-    background-color: #dc3545 !important;
+.success-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    text-align: center;
+    min-width: 300px;
 }
 
-/* Responsive Design */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.success-modal button {
+    margin-top: 15px;
+    padding: 10px 25px;
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.success-modal button:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
-    .main-content {
-        padding: 20px 10px;
-    }
-
-    .main-content.sidebar-active {
-        margin-left: 0;
-    }
-
-    .sidebar {
-        width: 200px;
-    }
-
-    .container {
-        max-width: 100%;
-    }
-
-    .form-container {
-        padding: 20px;
-    }
-
     .button-group {
         flex-direction: column;
         align-items: stretch;
@@ -485,43 +495,5 @@ button.btn.btn-record:hover {
         margin: 25% auto;
         max-width: 300px;
         padding: 20px;
-    }
-}
-
-@media (max-width: 767px) {
-    .nav-brand h1 {
-        font-size: 1.1rem;
-    }
-
-    .datetime {
-        font-size: 0.8rem;
-        padding: 5px 10px;
-    }
-
-    .sidebar {
-        width: 200px; /* Slightly narrower on mobile */
-        z-index: 1001; /* Overlay on top */
-    }
-}
-
-@media (max-width: 576px) {
-    .modal-content {
-        margin: 25% auto;
-        max-width: 300px;
-        padding: 20px;
-    }
-
-    .modal-content p {
-        font-size: 1.1rem;
-    }
-
-    .modal-button {
-        padding: 8px 20px;
-        font-size: 0.95rem;
-        min-width: 80px;
-    }
-
-    .modal-buttons {
-        gap: 10px;
     }
 }
