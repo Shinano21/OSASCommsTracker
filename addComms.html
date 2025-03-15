@@ -8,9 +8,46 @@
     <link rel="icon" type="image/png" href="images/OSAS.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            text-align: center;
+            min-width: 300px;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .success-modal button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .success-modal button:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-    <!-- NAV BAR -->
     <div class="nav-bar">
         <div class="nav-brand">
             <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">☰</button>
@@ -22,12 +59,11 @@
         </div>
     </div>
 
-    <!-- SIDE BAR -->
     <div class="sidebar">
         <ul>
-            <li><a href="addComms.html"><i class="bi bi-chat-dots"></i> Communications</a></li>
-            <li><a href="https://docs.google.com/spreadsheets/d/1cGctdRdN28EwrkSIaxh-ngAidtCU8QYuryrsN4Nji3Y/edit?usp=sharing" target="_blank"><i class="bi bi-table"></i> Sheets</a></li>
-            <li><a href="#" class="logout-btn" onclick="showLogoutModal()"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            <li><a href="addComms.html">Communications</a></li>
+            <li><a href="https://docs.google.com/spreadsheets/d/1cGctdRdN28EwrkSIaxh-ngAidtCU8QYuryrsN4Nji3Y/edit?usp=sharing" target="_blank">Sheets</a></li>
+            <li><a href="#" class="logout-btn" onclick="showLogoutModal()">Logout</a></li>
         </ul>
     </div>
 
@@ -44,49 +80,35 @@
                 <div id="incoming" class="form-section active">
                     <form id="incomingForm" action="https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec" method="POST">
                         <input type="hidden" name="type" value="incoming">
-                        
-                        <!-- Combine Date and Control Number -->
-                        <div style="display: flex; gap: 15px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label for="dateIncoming">Date <span class="required">*</span></label>
-                                <input type="date" id="dateIncoming" name="date" required placeholder="Select a date">
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label for="control_numberIncoming">Control Number <span class="required">*</span></label>
-                                <input type="number" id="control_numberIncoming" name="control_number" required placeholder="Enter control number">
-                            </div>
+                        <div class="form-group">
+                            <label for="dateIncoming">Date <span class="required">*</span></label>
+                            <input type="date" id="dateIncoming" name="date" required placeholder="Select a date">
                         </div>
-
-                        <div style="display: flex; gap: 15px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label for="buildingIncoming">Building <span class="required">*</span></label>
-                                <select id="buildingIncoming" name="building" onchange="updateOffices('incoming')" required>
-                                    <option value="" disabled selected>Select Building</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label for="officeIncoming">Office <span class="required">*</span></label>
-                                <select id="officeIncoming" name="office" required>
-                                    <option value="">Select Office</option>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label for="control_numberIncoming">Control Number <span class="required">*</span></label>
+                            <input type="number" id="control_numberIncoming" name="control_number" required placeholder="Enter control number">
+                        </div>
+                        <div class="form-group">
+                            <label for="officeIncoming">Office <span class="required">*</span></label>
+                            <select id="officeIncoming" name="office" required>
+                                <option value="">Select Office</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Finance">Finance</option>
+                                <option value="HR">HR</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="particularsIncoming">Particulars <span class="required">*</span></label>
                             <textarea id="particularsIncoming" name="particulars" required placeholder="e.g. Request for event approval..."></textarea>
                         </div>
-
-                        <!-- Combine Time Received and Action -->
-                        <div style="display: flex; gap: 15px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label for="timeIncoming">Time Received <span class="required">*</span></label>
-                                <input type="time" id="timeIncoming" name="time" required placeholder="Select time">
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label for="actionIncoming">Action</label>
-                                <input type="text" id="actionIncoming" name="userAction" placeholder="Enter action taken">
-                            </div>
+                        <div class="form-group">
+                            <label for="timeIncoming">Time Received <span class="required">*</span></label>
+                            <input type="time" id="timeIncoming" name="time" required placeholder="Select time">
+                        </div>
+                        <div class="form-group">
+                            <label for="actionIncoming">Action</label>
+                            <input type="text" id="actionIncoming" name="userAction" placeholder="Enter action taken">
                         </div>
 
                         <div class="button-group">
@@ -104,40 +126,32 @@
                 <div id="outgoing" class="form-section">
                     <form id="outgoingForm" action="https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec" method="POST">
                         <input type="hidden" name="type" value="outgoing">
-
-                        <!-- Combine Date and Control Number -->
-                        <div style="display: flex; gap: 15px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label>Date <span class="required">*</span></label>
-                                <input type="date" name="date" required placeholder="Select a date">
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label>Control Number <span class="required">*</span></label>
-                                <input type="number" name="control_number" required placeholder="Enter control number">
-                            </div>
+                        <div class="form-group">
+                            <label>Date <span class="required">*</span></label>
+                            <input type="date" name="date" required placeholder="Select a date">
                         </div>
-
-                        <div style="display: flex; gap: 15px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label>Building <span class="required">*</span></label>
-                                <select name="building" onchange="updateOffices('outgoing')" required>
-                                    <option value="" disabled selected>Select Building</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label>Office <span class="required">*</span></label>
-                                <select name="office" required>
-                                    <option value="">Select Office</option>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label>Control Number <span class="required">*</span></label>
+                            <input type="number" name="control_number" required placeholder="Enter control number">
+                        </div>
+                        <div class="form-group">
+                            <label>Office <span class="required">*</span></label>
+                            <select name="office" required>
+                                <option value="">Select Office</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Finance">Finance</option>
+                                <option value="HR">HR</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label>Particulars <span class="required">*</span></label>
                             <textarea name="particulars" required placeholder="e.g. Travel Order for BSIT students..."></textarea>
                         </div>
-
-                        <!-- Combine Date Received, Time Received, and Receiver -->
+                        <div class="form-group">
+                            <label>Date Received <span class="required">*</span></label>
+                            <input type="date" name="date_received" required placeholder="Select a date">
+                        </div>
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1;">
                                 <label>Date Received <span class="required">*</span></label>
@@ -152,7 +166,6 @@
                                 <input type="text" name="receiver" required placeholder="Enter receiver name">
                             </div>
                         </div>
-
                         <div class="button-group">
                             <button type="button" class="btn btn-view" onclick="viewRecords()">
                                 <i class="bi bi-eye"></i> View Records
@@ -167,10 +180,9 @@
         </div>
     </div>
 
-    <!-- LOGOUT MODAL -->
+    <!-- Logout Modal -->
     <div id="logoutModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="hideLogoutModal()">×</span>
             <p>Are you sure you want to logout?</p>
             <div class="modal-buttons">
                 <button class="modal-button confirm-btn" onclick="performLogout()">Yes</button>
@@ -228,14 +240,6 @@
 
         const token = localStorage.getItem('authToken');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('logoutModal').style.display = 'none';
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            populateBuildings('incoming');
-            populateBuildings('outgoing');
-        });
-
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
@@ -244,33 +248,47 @@
         }
 
         function showLogoutModal() {
-            document.getElementById('logoutModal').style.display = 'block';
+        console.log('showLogoutModal called from:', new Error().stack);
+        const logoutModal = document.getElementById('logoutModal');
+        if (logoutModal) {
+            logoutModal.style.display = 'block';
+            console.log('Logout modal displayed');
         }
+    }
 
-        function hideLogoutModal() {
-            document.getElementById('logoutModal').style.display = 'none';
+    function hideLogoutModal() {
+        const logoutModal = document.getElementById('logoutModal');
+        if (logoutModal) {
+            logoutModal.style.display = 'none';
+            console.log('Logout modal hidden');
         }
+    }
 
-        function performLogout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('authToken');
-            history.pushState(null, null, 'index.html');
-            window.location.href = 'index.html';
-        }
+    function performLogout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('authToken');
+        history.pushState(null, null, 'index.html');
+        window.location.href = 'index.html';
+    }
 
         function updateDateTime() {
             const now = new Date();
             const options = { 
+                weekday: 'long', 
+                day: '2-digit', 
+                month: '2-digit', 
                 year: 'numeric', 
-                month: 'long', 
-                day: 'numeric', 
                 hour: '2-digit', 
                 minute: '2-digit', 
-                second: '2-digit',
+                second: '2-digit', 
                 hour12: true 
             };
-            document.getElementById('datetime').textContent = now.toLocaleString('en-US', options);
+            const formattedDateTime = now.toLocaleString('en-GB', options);
+            document.getElementById('datetime').textContent = formattedDateTime;
         }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
 
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
@@ -294,9 +312,8 @@
             document.getElementById('successOverlay').style.display = 'none';
         }
 
-        function goToDashboard() {
+                function goToDashboard() {
             hideSuccessModal();
-            document.getElementById('logoutModal').style.display = 'none';
             window.location.href = 'dashboard.html';
         }
 
@@ -469,6 +486,7 @@
                 toggleButtonState(submitButton, false);
             }
         });
+        
     </script>
 </body>
 </html>
