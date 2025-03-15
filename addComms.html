@@ -8,16 +8,30 @@
     <link rel="icon" type="image/png" href="images/OSAS.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .time-group {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .time-group input[type="number"] {
+            width: 60px;
+            padding: 5px;
+        }
+        .time-group select {
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
     <!-- NAV BAR -->
     <div class="nav-bar">
         <div class="nav-brand">
             <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">☰</button>
-            <h1>OSASCommsTracker</h1>
+            <h1 id="pageTitle">OSASCommsTracker</h1>
         </div>
         <div class="nav-menu">
-            <a href="dashboard.html">Dashboard</a>
+            <a href="addComms.html">Record Form</a>
             <div class="datetime" id="datetime"></div>
         </div>
     </div>
@@ -25,6 +39,7 @@
     <!-- SIDE BAR -->
     <div class="sidebar">
         <ul>
+            <li><a href="dashboard.html"><i class="bi bi-house-door"></i> Dashboard</a></li>
             <li><a href="addComms.html"><i class="bi bi-chat-dots"></i> Communications</a></li>
             <li><a href="https://docs.google.com/spreadsheets/d/1cGctdRdN28EwrkSIaxh-ngAidtCU8QYuryrsN4Nji3Y/edit?usp=sharing" target="_blank"><i class="bi bi-table"></i> Sheets</a></li>
             <li><a href="#" class="logout-btn" onclick="showLogoutModal()"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
@@ -77,11 +92,19 @@
                             <textarea id="particularsIncoming" name="particulars" required placeholder="e.g. Request for event approval..."></textarea>
                         </div>
 
-                        <!-- Combine Time Received and Action -->
+                        <!-- Custom Time Input (12-hour) -->
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1;">
-                                <label for="timeIncoming">Time Received <span class="required">*</span></label>
-                                <input type="time" id="timeIncoming" name="time" required placeholder="Select time">
+                                <label>Time Received <span class="required">*</span></label>
+                                <div class="time-group">
+                                    <input type="number" name="time_hours" min="1" max="12" required placeholder="HH" aria-label="Hours">
+                                    <span>:</span>
+                                    <input type="number" name="time_minutes" min="0" max="59" required placeholder="MM" aria-label="Minutes">
+                                    <select name="time_period" required>
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group" style="flex: 1;">
                                 <label for="actionIncoming">Action</label>
@@ -137,7 +160,7 @@
                             <textarea name="particulars" required placeholder="e.g. Travel Order for BSIT students..."></textarea>
                         </div>
 
-                        <!-- Combine Date Received, Time Received, and Receiver -->
+                        <!-- Custom Time Input (12-hour) -->
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1;">
                                 <label>Date Received <span class="required">*</span></label>
@@ -145,7 +168,15 @@
                             </div>
                             <div class="form-group" style="flex: 1;">
                                 <label>Time Received <span class="required">*</span></label>
-                                <input type="time" name="time_received" required placeholder="Select time">
+                                <div class="time-group">
+                                    <input type="number" name="time_received_hours" min="1" max="12" required placeholder="HH" aria-label="Hours">
+                                    <span>:</span>
+                                    <input type="number" name="time_received_minutes" min="0" max="59" required placeholder="MM" aria-label="Minutes">
+                                    <select name="time_received_period" required>
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group" style="flex: 1;">
                                 <label>Receiver <span class="required">*</span></label>
@@ -190,29 +221,10 @@
     <script>
         // Building-to-office mapping
         const buildingOfficeData = {
-            "Main Building": [
-                "Registrar's Office",
-                "Admissions Office",
-                "Accounting Office",
-                "President's Office"
-            ],
-            "Science Building": [
-                "Physics Lab",
-                "Chemistry Lab",
-                "Biology Lab",
-                "IT Department"
-            ],
-            "Admin Building": [
-                "HR Office",
-                "Finance Office",
-                "Procurement Office",
-                "Admin Services"
-            ],
-            "Engineering Building": [
-                "Mechanical Engineering Office",
-                "Civil Engineering Office",
-                "Electrical Engineering Office"
-            ]
+            "Main Building": ["Registrar's Office", "Admissions Office", "Accounting Office", "President's Office"],
+            "Science Building": ["Physics Lab", "Chemistry Lab", "Biology Lab", "IT Department"],
+            "Admin Building": ["HR Office", "Finance Office", "Procurement Office", "Admin Services"],
+            "Engineering Building": ["Mechanical Engineering Office", "Civil Engineering Office", "Electrical Engineering Office"]
         };
 
         // Check login status
@@ -234,6 +246,7 @@
             setInterval(updateDateTime, 1000);
             populateBuildings('incoming');
             populateBuildings('outgoing');
+            updatePageTitle(); // Add this to set initial title
         });
 
         function toggleSidebar() {
@@ -272,6 +285,17 @@
             document.getElementById('datetime').textContent = now.toLocaleString('en-US', options);
         }
 
+        // Function to update page title based on current page
+        function updatePageTitle() {
+            const pageTitle = document.getElementById('pageTitle');
+            const currentPage = window.location.pathname;
+            if (currentPage.includes('dashboard.html')) {
+                pageTitle.textContent = 'OSASCommsTracker - Dashboard';
+            } else if (currentPage.includes('addComms.html')) {
+                pageTitle.textContent = 'OSASCommsTracker - Record Form';
+            }
+        }
+
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
@@ -296,7 +320,6 @@
 
         function goToDashboard() {
             hideSuccessModal();
-            document.getElementById('logoutModal').style.display = 'none';
             window.location.href = 'dashboard.html';
         }
 
@@ -350,18 +373,25 @@
             }
         }
 
-        // Form Submissions with double-entry prevention
+        // Combine time components into 12-hour format string
+        function get12HourTime(hoursInput, minutesInput, periodInput) {
+            const hours = hoursInput.value.padStart(2, '0');
+            const minutes = minutesInput.value.padStart(2, '0');
+            const period = periodInput.value;
+            return `${hours}:${minutes} ${period}`;
+        }
+
+        // Incoming Form Submission
         document.getElementById('incomingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const submitButton = document.getElementById('incomingSubmit');
             
-            // Prevent submission if already in progress
             if (submitButton.disabled) return;
 
             toggleButtonState(submitButton, true);
 
             try {
-                const requiredFields = ['date', 'control_number', 'building', 'office', 'particulars', 'time'];
+                const requiredFields = ['date', 'control_number', 'building', 'office', 'particulars', 'time_hours', 'time_minutes', 'time_period'];
                 const missingFields = requiredFields.filter(field => !this[field].value.trim());
                 if (missingFields.length > 0) {
                     alert('Please fill in all required fields: ' + missingFields.join(', '));
@@ -376,6 +406,8 @@
                     return;
                 }
 
+                const time12 = get12HourTime(this.time_hours, this.time_minutes, this.time_period);
+
                 const data = new URLSearchParams();
                 data.append('action', 'addComms');
                 data.append('token', token);
@@ -385,7 +417,7 @@
                 data.append('building', this.building.value);
                 data.append('office', this.office.value);
                 data.append('particulars', this.particulars.value);
-                data.append('time', this.time.value);
+                data.append('time', time12);
                 data.append('userAction', this.userAction.value || '');
 
                 const response = await fetch(this.action, {
@@ -397,7 +429,7 @@
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 if (result.success) {
-                    showSuccessModal(result.message);
+                    showSuccessModal(`${result.message} Time recorded: ${time12}`);
                     this.reset();
                     populateBuildings('incoming');
                 } else {
@@ -410,17 +442,17 @@
             }
         });
 
+        // Outgoing Form Submission
         document.getElementById('outgoingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const submitButton = document.getElementById('outgoingSubmit');
             
-            // Prevent submission if already in progress
             if (submitButton.disabled) return;
 
             toggleButtonState(submitButton, true);
 
             try {
-                const requiredFields = ['date', 'control_number', 'building', 'office', 'particulars', 'date_received', 'time_received', 'receiver'];
+                const requiredFields = ['date', 'control_number', 'building', 'office', 'particulars', 'date_received', 'time_received_hours', 'time_received_minutes', 'time_received_period', 'receiver'];
                 const missingFields = requiredFields.filter(field => !this[field].value.trim());
                 if (missingFields.length > 0) {
                     alert('Please fill in all required fields: ' + missingFields.join(', '));
@@ -435,6 +467,8 @@
                     return;
                 }
 
+                const timeReceived12 = get12HourTime(this.time_received_hours, this.time_received_minutes, this.time_received_period);
+
                 const data = new URLSearchParams();
                 data.append('action', 'addComms');
                 data.append('token', token);
@@ -445,7 +479,7 @@
                 data.append('office', this.office.value);
                 data.append('particulars', this.particulars.value);
                 data.append('date_received', this.date_received.value);
-                data.append('time_received', this.time_received.value);
+                data.append('time_received', timeReceived12);
                 data.append('receiver', this.receiver.value);
 
                 const response = await fetch(this.action, {
@@ -457,7 +491,7 @@
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 if (result.success) {
-                    showSuccessModal(result.message);
+                    showSuccessModal(`${result.message} Time received: ${timeReceived12}`);
                     this.reset();
                     populateBuildings('outgoing');
                 } else {
