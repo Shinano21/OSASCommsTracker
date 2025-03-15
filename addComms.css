@@ -1,10 +1,11 @@
 :root {
-    --primary-color: #2c3e50; /* Navy blue for header */
-    --secondary-color: #3498db; /* Bright blue for accents */
-    --success-color: #28a745; /* Green for positive actions */
-    --neutral-color: #6c757d; /* Gray for neutral actions */
-    --sidebar-width: 250px;
-    --header-height: 60px;
+    --primary-color: #050A30;
+    --secondary-color: #62D1ED;
+    --accent-color: #C14B0C;
+    --success-color: #28a745;
+    --neutral-color: #6c757d;
+    --sidebar-width: 230px;
+    --header-height: 70px;
     --border-radius: 8px;
     --box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
 }
@@ -17,8 +18,9 @@ body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f7fa; /* Softer background */
+    background-color: #f4f7fa;
     min-height: 100vh;
+    overflow-y: hidden;
 }
 
 .nav-bar {
@@ -31,8 +33,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
 
@@ -53,20 +55,20 @@ body {
 
 .nav-brand h1 {
     margin: 0;
-    font-size: 1.5rem;
-    font-weight: 500;
+    font-size: 1.3rem;
+    font-weight: 600;
 }
 
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
 .nav-menu a {
     color: white;
     text-decoration: none;
-    padding: 8px 15px;
+    padding: 8px 12px;
     transition: all 0.3s ease;
 }
 
@@ -76,15 +78,15 @@ body {
 }
 
 .datetime {
-    font-size: 1rem;
-    padding: 8px 15px;
-    background-color: rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    background-color: rgba(255, 255, 255, 0.15);
     border-radius: 4px;
 }
 
 .sidebar {
     width: var(--sidebar-width);
-    background-color: #34495e;
+    background-color: var(--primary-color);
     color: white;
     position: fixed;
     height: calc(100% - var(--header-height));
@@ -94,7 +96,6 @@ body {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 999;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar.active {
@@ -111,7 +112,9 @@ body {
     color: white;
     text-decoration: none;
     padding: 15px 20px;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     transition: all 0.3s ease;
 }
 
@@ -120,24 +123,42 @@ body {
     padding-left: 25px;
 }
 
+.sidebar ul li a i {
+    font-size: 1.2rem;
+}
+
+.logout-btn:hover {
+    background-color: var(--accent-color) !important;
+}
+
 .main-content {
     margin-left: 0;
     margin-top: var(--header-height);
     padding: 30px 15px;
-    transition: margin-left 0.3s ease;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    min-height: calc(100vh - var(--header-height));
+    max-height: calc(100vh - var(--header-height));
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .main-content.sidebar-active {
     margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
 }
 
 .container {
     background-color: white;
-    padding: 0; /* Padding will be handled by form-container */
+    padding: 0;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    max-width: 800px; /* Slightly narrower for better focus */
-    margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .tab-container {
@@ -180,25 +201,31 @@ body {
     flex-direction: column;
     gap: 20px;
     border: 1px solid #e9ecef;
-    overflow: hidden; /* Prevent scrolling if content overflows */
-    max-height: 100%; /* Allow content to fit naturally */
+    max-height: 100%;
+    width: 100%;
+    overflow-y: auto;
 }
 
 .form-section {
     display: none;
     flex-direction: column;
     gap: 20px;
+    width: 100%;
 }
 
 .form-section.active {
     display: flex;
 }
 
-
 .form-group {
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+.form-section .form-group {
+    flex: 1;
+    min-width: 0;
 }
 
 label {
@@ -237,199 +264,206 @@ textarea {
     height: 100px;
 }
 
-/* Button Group */
 .button-group {
     display: flex;
-    justify-content: space-between; /* Positions buttons on left and right */
+    justify-content: space-between;
     gap: 15px;
     margin-top: 20px;
     width: 100%;
 }
 
 .btn {
-    padding: 14px 30px; /* Increased padding for better click area */
+    padding: 14px 30px;
     border: none;
     cursor: pointer;
-    border-radius: 6px; /* Slightly larger border-radius for modern look */
+    border-radius: 6px;
     color: white;
     font-weight: 600;
     font-size: 14px;
     display: inline-flex;
     align-items: center;
-    gap: 10px; /* Increased gap between icon and text */
+    gap: 10px;
     transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
     text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Record Button */
 .btn-record {
-    background: var(--success-color); /* Green for positive action */
+    background: var(--success-color);
+    position: relative;
+    transition: all 0.3s ease;
 }
 
-.btn-record:hover {
-    background: #218838; /* Darker green on hover */
-    transform: translateY(-2px); /* Slight lift effect on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+.btn-record:hover:not(:disabled) {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* View Records Button */
+.btn-record:disabled {
+    background: #6c757d;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
 .btn-view {
-    background: var(--neutral-color); /* Gray for neutral action */
+    background: var(--neutral-color);
 }
 
 .btn-view:hover {
-    background: orange; /* Darker gray on hover */
-    transform: translateY(-2px); /* Slight lift effect on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-
-/* Base Button Styles */
-button.btn {
-    padding: 14px 30px; /* Increased padding for better click area */
-    border: none !important; /* Override Bootstrap's border */
-    cursor: pointer;
-    border-radius: 6px; /* Slightly larger border-radius for modern look */
-    color: white !important; /* Ensure text color is white */
-    font-weight: 600;
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px; /* Increased gap between icon and text */
-    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+.button-text {
+    margin-left: 5px;
 }
 
-/* View Records Button */
-button.btn.btn-view {
-    background: var(--neutral-color) !important; /* Gray for neutral action */
-    border: none !important; /* Ensure no border */
-}
-
-/* View Records Button Hover */
-button.btn.btn-view:hover {
-    background: #5a6268 !important; /* Darker gray on hover */
-    transform: translateY(-2px); /* Slight lift effect on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-}
-
-/* Record Button */
-button.btn.btn-record {
-    background: var(--success-color) !important; /* Green for positive action */
-    border: none !important; /* Ensure no border */
-}
-
-/* Record Button Hover */
-button.btn.btn-record:hover {
-    background: #218838 !important; /* Darker green on hover */
-    transform: translateY(-2px); /* Slight lift effect on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .button-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    button.btn {
-        width: 100%;
-        justify-content: center;
-        padding: 12px 20px; /* Slightly smaller padding for smaller screens */
-    }
-}
-
-/* Modal Styles */
 .modal {
-    display: none;
+    display: none !important;
     position: fixed;
     z-index: 1001;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(5, 10, 48, 0.7);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
     background-color: white;
     margin: 15% auto;
-    padding: 25px;
-    border-radius: var(--border-radius);
+    padding: 30px;
+    border-radius: 12px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
+    position: relative;
+    border: 1px solid #e5e7eb;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .modal-content p {
-    margin: 0 0 20px 0;
-    font-size: 1.1rem;
-    color: #333;
+    margin: 0 0 25px 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    line-height: 1.5;
+    padding: 0 15px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    padding: 5px;
+}
+
+.close-btn:hover {
+    color: var(--accent-color);
 }
 
 .modal-buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
+    margin-top: 10px;
 }
 
 .modal-button {
-    padding: 10px 20px;
+    padding: 10px 25px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.3s ease;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 90px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .confirm-btn {
-    background-color: #dc3545;
+    background-color: var(--primary-color);
     color: white;
 }
 
 .confirm-btn:hover {
-    background-color: #c82333;
+    background-color: #1a2a4e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(5, 10, 48, 0.2);
 }
 
 .cancel-btn {
-    background-color: var(--neutral-color);
-    color: white;
+    background-color: #e5e7eb;
+    color: var(--primary-color);
 }
 
 .cancel-btn:hover {
-    background-color: #5a6268;
+    background-color: #d1d5db;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.logout-btn:hover {
-    background-color: #dc3545 !important;
+.success-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    text-align: center;
+    min-width: 300px;
 }
 
-/* Responsive Design */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.success-modal button {
+    margin-top: 15px;
+    padding: 10px 25px;
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.success-modal button:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
-    .main-content {
-        padding: 20px 10px;
-    }
-
-    .main-content.sidebar-active {
-        margin-left: 0;
-    }
-
-    .sidebar {
-        width: 200px;
-    }
-
-    .container {
-        max-width: 100%;
-    }
-
-    .form-container {
-        padding: 20px;
-    }
-
     .button-group {
         flex-direction: column;
         align-items: stretch;
@@ -438,21 +472,28 @@ button.btn.btn-record:hover {
     .btn {
         width: 100%;
         justify-content: center;
-        padding: 12px 20px; /* Slightly smaller padding for smaller screens */
+        padding: 12px 20px;
+    }
+
+    .form-section [style*="display: flex"] {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-section .form-group {
+        flex: none;
+        width: 100%;
+    }
+
+    .main-content.sidebar-active {
+        margin-left: var(--sidebar-width);
     }
 }
 
-@media (max-width: 480px) {
-    .nav-brand h1 {
-        font-size: 1.2rem;
-    }
-
-    .datetime {
-        font-size: 0.9rem;
-    }
-
-    .tab {
-        padding: 10px 20px;
-        font-size: 14px;
+@media (max-width: 576px) {
+    .modal-content {
+        margin: 25% auto;
+        max-width: 300px;
+        padding: 20px;
     }
 }
