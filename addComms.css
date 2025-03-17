@@ -65,16 +65,11 @@ body {
     gap: 15px;
 }
 
-.nav-menu a {
+.nav-static {
     color: white;
-    text-decoration: none;
     padding: 8px 12px;
-    transition: all 0.3s ease;
-}
-
-.nav-menu a:hover {
-    background-color: var(--secondary-color);
-    border-radius: 4px;
+    font-size: 1rem; /* Match the font size of other nav items */
+    font-weight: 500; /* Optional: for consistency with other nav items */
 }
 
 .datetime {
