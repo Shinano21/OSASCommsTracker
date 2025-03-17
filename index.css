@@ -131,6 +131,7 @@ a {
     color: white;
     text-decoration: underline;
     transition: color 0.3s;
+    cursor: pointer; /* Makes it a pointer */
 }
 
 a:hover {
