@@ -40,16 +40,7 @@
                     <button class="add-button" aria-label="Add New Record">Add Record</button>
                 </a>
             </div>
-            <div class="search-form" id="searchFormContainer">
-                <form id="searchForm">
-                    <input type="text" name="searchTerm" placeholder="Search Office, Building, Control Number, or Date..." required>
-                    <select name="sheetName" id="sheetSelect" onchange="loadSheetData()">
-                        <option value="incoming">Incoming</option>
-                        <option value="outgoing">Outgoing</option>
-                    </select>
-                    <button type="submit">Search</button>
-                </form>
-                <!-- Month and Year Filter -->
+            <div class="search-filter-container">
                 <div class="filter-form">
                     <select name="month" id="monthSelect" onchange="loadFilteredData()">
                         <option value="1">January</option>
@@ -71,6 +62,16 @@
                         <option value="2026">2026</option>
                     </select>
                     <button type="button" onclick="loadFilteredData()">Filter</button>
+                </div>
+                <div class="search-form" id="searchFormContainer">
+                    <form id="searchForm">
+                        <input type="text" name="searchTerm" placeholder="Search Office, Building, Control Number, or Date..." required>
+                        <select name="sheetName" id="sheetSelect" onchange="loadSheetData()">
+                            <option value="incoming">Incoming</option>
+                            <option value="outgoing">Outgoing</option>
+                        </select>
+                        <button type="submit">Search</button>
+                    </form>
                 </div>
             </div>
             <div class="results" id="results"></div>

@@ -168,37 +168,62 @@ body {
     color: var(--primary-color);
 }
 
-.search-form {
+.search-filter-container {
     display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     gap: 10px;
     margin-bottom: 20px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
+.filter-form,
+.search-form {
+    display: flex;
+    align-items: center; /* Vertically center the elements */
+    gap: 10px; /* Consistent spacing between elements */
+}
+
+.filter-form select,
+.filter-form button,
 .search-form input,
-.search-form select {
+.search-form select,
+.search-form button {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
-    flex: 1;
-    min-width: 200px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    background-color: white;
+    height: 40px; /* Consistent height */
+    box-sizing: border-box; /* Ensure padding doesn't affect height */
 }
 
+.filter-form select,
+.search-form select {
+    flex: 1; /* Equal width for dropdowns */
+    min-width: 120px; /* Minimum width to prevent shrinking too much */
+}
+
+.filter-form button,
 .search-form button {
-    padding: 10px 20px;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
+    background-color: var(--secondary-color); /* Light cyan background */
+    color: var(--primary-color); /* Dark text */
     border: none;
-    border-radius: 4px;
+    flex: 1; /* Equal width with dropdowns */
+    min-width: 80px; /* Minimum width for button */
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-weight: 500;
 }
 
+.filter-form button:hover,
 .search-form button:hover {
-    background-color: #4ab8d3; /* Darker cyan */
+    background-color: #4ab8d3; /* Darker cyan on hover */
+}
+
+.search-form input {
+    flex: 2; /* Wider input field */
+    min-width: 200px; /* Ensure it doesn't get too small */
 }
 
 .results {
@@ -424,16 +449,28 @@ body {
         margin-top: 10px;
     }
 
-    .search-form {
-        flex-direction: column;
+    .search-filter-container {
+        flex-direction: column; /* Stack on mobile */
     }
 
+    .filter-form,
+    .search-form {
+        flex-direction: column; /* Stack elements vertically on mobile */
+        width: 100%; /* Full width on mobile */
+    }
+
+    .filter-form select,
+    .filter-form button,
     .search-form input,
     .search-form select,
     .search-form button {
-        width: 100%;
-        min-width: unset;
-        margin-bottom: 10px;
+        flex: 1 1 100%; /* Equal width, full width on mobile */
+        margin-bottom: 10px; /* Space between stacked elements */
+    }
+
+    .filter-form button,
+    .search-form button {
+        margin-bottom: 0; /* Remove margin from last button */
     }
 
     .results th,
