@@ -1,128 +1,88 @@
 :root {
     --primary: #4a90e2;
     --primary-dark: #357abd;
-    --background: rgba(255, 255, 255, 0.2);
-    --glass-effect: rgba(255, 255, 255, 0.4);
+    --background: rgba(255, 255, 255, 0.15);
+    --glass-effect: rgba(255, 255, 255, 0.3);
     --backdrop: blur(16px);
-    --grey: #666;
-    --light-grey: #f4f4f4;
-    --error: #dc3545;
-    --success: #28a745;
-    --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    --spacing-unit: 8px;
-    --radius: 16px;
-}
-
-* {
-    box-sizing: border-box;
+    --text-dark: #333;
+    --white: #ffffff;
+    --radius: 20px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #89f7fe, #66a6ff);
-    min-height: 100vh;
     margin: 0;
+    padding: 0;
+    height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: calc(var(--spacing-unit) * 2);
-    color: white;
+    justify-content: center;
+    background: linear-gradient(135deg, #89f7fe, #66a6ff);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: var(--text-dark);
+    overflow: hidden;
 }
 
 .login-container {
-    max-width: 420px;
-    width: 100%;
-    margin: auto;
-    padding: calc(var(--spacing-unit) * 4);
     background: var(--background);
+    padding: 40px 30px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     backdrop-filter: var(--backdrop);
     -webkit-backdrop-filter: var(--backdrop);
+    width: 100%;
+    max-width: 420px;
+    animation: fadeIn 0.8s ease;
     border: 1px solid var(--glass-effect);
-    animation: fadeIn 0.5s ease;
-}
-
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    text-align: center;
 }
 
 h2 {
-    font-size: 30px;
-    margin-bottom: calc(var(--spacing-unit) * 4);
-    text-align: center;
-    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--white);
+    font-weight: 600;
+    font-size: 28px;
 }
 
 .form-group {
-    margin-bottom: calc(var(--spacing-unit) * 3);
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 label {
     display: block;
-    margin-bottom: calc(var(--spacing-unit)*0.5);
-    color: white;
+    margin-bottom: 6px;
+    color: var(--white);
     font-size: 14px;
     font-weight: 500;
 }
 
-input {
+input[type="text"],
+input[type="password"] {
     width: 100%;
-    padding: calc(var(--spacing-unit) * 1.8);
-    border: none;
+    padding: 14px 16px;
     border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.3);
-    color: #fff;
+    border: none;
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
     font-size: 16px;
     outline: none;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
 input::placeholder {
     color: rgba(255, 255, 255, 0.7);
 }
 
-input:focus {
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
-}
-
-.show-password-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: calc(var(--spacing-unit) * 2);
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.show-password-container input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    cursor: pointer;
-    accent-color: var(--primary);
-    transition: transform 0.2s ease-in-out;
-}
-
-.show-password-container input[type="checkbox"]:hover {
-    transform: scale(1.1);
-}
-
-.show-password-container label {
-    margin-left: calc(var(--spacing-unit) / 2);
-    cursor: pointer;
-}
-
-.show-password-container:hover label {
-    color: var(--primary);
-}
-
 button {
     width: 100%;
-    padding: calc(var(--spacing-unit) * 2);
+    padding: 14px;
     background: var(--primary);
     color: white;
     border: none;
@@ -130,54 +90,65 @@ button {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease;
+    margin-top: 10px;
 }
 
 button:hover {
     background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 button:active {
     transform: scale(0.98);
 }
 
-button:disabled {
-    background: var(--grey);
-    opacity: 0.7;
-    cursor: not-allowed;
+.show-password-container {
+    display: flex;
+    align-items: center;
+    margin: 12px 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+.show-password-container input {
+    margin-right: 8px;
+    width: auto;
+    height: auto;
+}
+
+.show-password-container label {
+    margin: 0;
+    cursor: pointer;
 }
 
 .forgot-password {
-    margin-top: calc(var(--spacing-unit) * 2);
-    text-align: center;
+    margin-top: 16px;
 }
 
 a {
     color: white;
-    font-weight: 500;
-    cursor: pointer;
     text-decoration: underline;
-    transition: color 0.2s ease;
+    transition: color 0.3s;
 }
 
 a:hover {
     color: var(--primary-dark);
 }
 
-#message {
-    margin-top: calc(var(--spacing-unit) * 2);
-    text-align: center;
-    min-height: 24px;
-    font-size: 14px;
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.error {
-    color: var(--error);
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    h2 { font-size: 24px; }
+    input, button { font-size: 14px; }
 }
 
-.success {
-    color: var(--success);
-}
 
 /* Modal Styles */
 .modal {
