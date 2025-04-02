@@ -65,16 +65,11 @@ body {
     gap: 15px;
 }
 
-.nav-menu a {
+.nav-static {
     color: white;
-    text-decoration: none;
     padding: 8px 12px;
-    transition: all 0.3s ease;
-}
-
-.nav-menu a:hover {
-    background-color: var(--secondary-color);
-    border-radius: 4px;
+    font-size: 1rem; /* Match the font size of other nav items */
+    font-weight: 500; /* Optional: for consistency with other nav items */
 }
 
 .datetime {
@@ -268,56 +263,86 @@ textarea {
     display: flex;
     justify-content: space-between;
     gap: 15px;
-    margin-top: 20px;
+    margin-top: 30px;
     width: 100%;
 }
 
 .btn {
-    padding: 14px 30px;
+    padding: 14px 28px; /* Slightly larger padding for visibility */
     border: none;
     cursor: pointer;
     border-radius: 6px;
     color: white;
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: 700; /* Bolder text */
+    font-size: 16px; /* Larger text for readability */
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px; /* Slightly larger gap between icon and text */
     transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
     text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15); /* Stronger shadow for depth */
+    min-width: 160px; /* Slightly wider buttons */
+    justify-content: center;
+    text-transform: uppercase; /* Make text more prominent */
+}
+
+.btn:focus {
+    outline: 3px solid var(--secondary-color);
+    outline-offset: 2px;
 }
 
 .btn-record {
-    background: var(--success-color);
-    position: relative;
+    background: var(--success-color); /* Green */
     transition: all 0.3s ease;
 }
 
 .btn-record:hover:not(:disabled) {
-    background: #218838;
+    background: #218838; /* Darker green on hover */
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4); /* Green shadow */
+}
+
+.btn-record:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
 .btn-record:disabled {
-    background: #6c757d;
+    background: var(--neutral-color); /* Gray when disabled */
     opacity: 0.7;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-record:disabled .button-text {
+    color: white; /* Ensure text remains readable */
 }
 
 .btn-view {
-    background: var(--neutral-color);
+    background: var(--view-btn-color); /* Bright blue */
+    color: white;
 }
 
 .btn-view:hover {
-    background: #5a6268;
+    background: #0056b3; /* Darker blue on hover */
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4); /* Blue shadow */
+}
+
+.btn-view:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
 }
 
 .button-text {
-    margin-left: 5px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Ensure icons are properly sized */
+.btn i {
+    font-size: 18px; /* Slightly larger icon for better visibility */
 }
 
 .modal {
@@ -465,14 +490,25 @@ textarea {
 
 @media (max-width: 768px) {
     .button-group {
-        flex-direction: column;
+        flex-direction: column; /* Stack vertically on small screens */
         align-items: stretch;
+        gap: 12px;
     }
 
     .btn {
         width: 100%;
-        justify-content: center;
+        max-width: none;
         padding: 12px 20px;
+        min-width: unset;
+        font-size: 14px; /* Slightly smaller text on mobile */
+    }
+
+    .btn i {
+        font-size: 16px; /* Adjust icon size on mobile */
+    }
+
+    .button-text {
+        font-size: 14px;
     }
 
     .form-section [style*="display: flex"] {
@@ -495,5 +531,18 @@ textarea {
         margin: 25% auto;
         max-width: 300px;
         padding: 20px;
+    }
+
+    .button-group {
+        flex-direction: column; /* Stack buttons vertically on small screens */
+        align-items: flex-end; /* Align to the right */
+        gap: 12px;
+    }
+
+    .btn {
+        width: 100%; /* Full width buttons on small screens */
+        max-width: 200px; /* Limit max width for better appearance */
+        padding: 12px 20px;
+        min-width: unset; /* Remove min-width for small screens */
     }
 }
