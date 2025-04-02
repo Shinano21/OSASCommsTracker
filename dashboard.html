@@ -45,8 +45,8 @@
                     <select name="month" id="monthSelect" onchange="loadFilteredData()">
                         <option value="1">January</option>
                         <option value="2">February</option>
-                        <option value="3" selected>March</option>
-                        <option value="4">April</option>
+                        <option value="3">March</option>
+                        <option value="4" selected>April</option>
                         <option value="5">May</option>
                         <option value="6">June</option>
                         <option value="7">July</option>
@@ -61,7 +61,6 @@
                         <option value="2025" selected>2025</option>
                         <option value="2026">2026</option>
                     </select>
-                    <button type="button" onclick="loadFilteredData()">Filter</button>
                 </div>
                 <div class="search-form" id="searchFormContainer">
                     <form id="searchForm">
@@ -158,7 +157,7 @@
                 });
             }
             loadSection('communications');
-            loadSheetData();
+            loadFilteredData(); // Load filtered data on page load
             updatePageTitle();
         });
 
@@ -225,8 +224,74 @@
                 for (let i = 1; i < data.length; i++) {
                     html += `<tr>`;
                     const row = data[i];
-                    headers.forEach((_, index) => {
-                        html += `<td>${row[index] || ''}</td>`;
+                    headers.forEach((header, index) => {
+                        let cellData = row[index] || '';
+                        // Format the Date column (index 0)
+                        if (header.toLowerCase() === 'date' && cellData) {
+                            const date = new Date(cellData);
+                            if (!isNaN(date)) {
+                                cellData = date.toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                }); // e.g., "April 2, 2025"
+                            }
+                        }
+                        // Format the Time column (index 5 for incoming, index 6 for outgoing)
+                        if (header.toLowerCase() === 'time' && cellData) {
+                            // Check if the time matches the "HH:MM AM/PM" format
+                            const timeMatch = cellData.match(/^(\d{1,2}):(\d{2})\s?(AM|PM)$/i);
+                            if (timeMatch) {
+                                // Extract hours, minutes, and period (AM/PM)
+                                let hours = parseInt(timeMatch[1], 10);
+                                const minutes = timeMatch[2];
+                                const period = timeMatch[3].toUpperCase();
+
+                                // Convert 12-hour format to 24-hour for Date parsing
+                                if (period === 'PM' && hours !== 12) {
+                                    hours += 12;
+                                } else if (period === 'AM' && hours === 12) {
+                                    hours = 0;
+                                }
+
+                                // Get the date from the Date column (index 0)
+                                const dateFromDateColumn = new Date(row[0]);
+                                if (!isNaN(dateFromDateColumn)) {
+                                    // Combine the date with the parsed time
+                                    const combinedDateTime = new Date(
+                                        dateFromDateColumn.getFullYear(),
+                                        dateFromDateColumn.getMonth(),
+                                        dateFromDateColumn.getDate(),
+                                        hours,
+                                        minutes
+                                    );
+                                    if (!isNaN(combinedDateTime)) {
+                                        cellData = combinedDateTime.toLocaleTimeString('en-US', {
+                                            hour: 'numeric',
+                                            minute: '2-digit',
+                                            hour12: true
+                                        }); // e.g., "12:33 PM"
+                                    } else {
+                                        cellData = "N/A";
+                                    }
+                                } else {
+                                    cellData = "N/A";
+                                }
+                            } else {
+                                // If the time format is invalid, use the time from the Date column
+                                const dateFromDateColumn = new Date(row[0]);
+                                if (!isNaN(dateFromDateColumn)) {
+                                    cellData = dateFromDateColumn.toLocaleTimeString('en-US', {
+                                        hour: "numeric",
+                                        minute: "2-digit",
+                                        hour12: true
+                                    }); // e.g., "12:00 PM"
+                                } else {
+                                    cellData = "N/A";
+                                }
+                            }
+                        }
+                        html += `<td>${cellData}</td>`;
                     });
                     html += `</tr>`;
                 }
@@ -344,7 +409,7 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', loadSheetData);
+        document.addEventListener('DOMContentLoaded', loadFilteredData); // Load filtered data on page load
     </script>
 </body>
 </html>
