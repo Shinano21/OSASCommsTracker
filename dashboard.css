@@ -124,7 +124,6 @@ body {
     font-size: 1.2rem;
 }
 
-
 .main-content {
     margin-left: 0;
     margin-top: var(--header-height);
@@ -265,6 +264,22 @@ body {
     background-color: var(--accent-color) !important;
 }
 
+.add-button {
+    padding: 12px 24px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.add-button:hover {
+    background-color: #a33e0a; /* Darker shade of accent */
+}
+
 /* Modal Styles */
 .modal {
     display: none;
@@ -372,23 +387,6 @@ body {
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
-.add-button {
-    padding: 12px 24px;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.add-button:hover {
-    background-color: #a33e0a; /* Darker shade of accent */
-}
-
 
 /* Media Queries for Mobile */
 @media (max-width: 767px) {
