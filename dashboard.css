@@ -1,9 +1,8 @@
-/* CSS FOR DASHBOARD */
-
+/* dashboard.css */
 :root {
-    --primary-color: #050A30; /* Deep navy blue for navbar and sidebar */
-    --secondary-color: #62D1ED; /* Light cyan for interactive elements */
-    --accent-color: #C14B0C; /* Burnt orange for highlights */
+    --primary-color: #050A30;
+    --secondary-color: #62D1ED;
+    --accent-color: #C14B0C;
     --sidebar-width: 230px;
     --header-height: 70px;
 }
@@ -16,7 +15,7 @@ body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f7fa; /* Slightly lighter background */
+    background-color: #f5f7fa;
     min-height: 100vh;
 }
 
@@ -65,8 +64,8 @@ body {
 .nav-static {
     color: white;
     padding: 8px 12px;
-    font-size: 1rem; /* Match the font size of other nav items */
-    font-weight: 500; /* Optional: for consistency with other nav items */
+    font-size: 1rem;
+    font-weight: 500;
 }
 
 .datetime {
@@ -138,7 +137,7 @@ body {
 }
 
 #searchFormContainer {
-    display: block; /* Initially visible */
+    display: block;
 }
 
 .container {
@@ -168,14 +167,14 @@ body {
     align-items: flex-start;
     gap: 10px;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    flex-wrap: wrap;
 }
 
 .filter-form,
 .search-form {
     display: flex;
-    align-items: center; /* Vertically center the elements */
-    gap: 10px; /* Consistent spacing between elements */
+    align-items: center;
+    gap: 10px;
 }
 
 .filter-form select,
@@ -189,39 +188,39 @@ body {
     font-size: 1rem;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
     background-color: white;
-    height: 40px; /* Consistent height */
-    box-sizing: border-box; /* Ensure padding doesn't affect height */
+    height: 40px;
+    box-sizing: border-box;
 }
 
 .filter-form select,
 .search-form select {
-    flex: 1; /* Equal width for dropdowns */
-    min-width: 120px; /* Minimum width to prevent shrinking too much */
+    flex: 1;
+    min-width: 120px;
 }
 
 .filter-form button,
 .search-form button {
-    background-color: var(--secondary-color); /* Light cyan background */
-    color: var(--primary-color); /* Dark text */
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
     border: none;
-    flex: 1; /* Equal width with dropdowns */
-    min-width: 80px; /* Minimum width for button */
+    flex: 1;
+    min-width: 80px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .filter-form button:hover,
 .search-form button:hover {
-    background-color: #4ab8d3; /* Darker cyan on hover */
+    background-color: #4ab8d3;
 }
 
 .search-form input {
-    flex: 2; /* Wider input field */
-    min-width: 200px; /* Ensure it doesn't get too small */
+    flex: 2;
+    min-width: 200px;
 }
 
 .results {
-    overflow-x: auto; /* Enable horizontal scrolling on mobile */
+    overflow-x: auto;
 }
 
 .results table {
@@ -242,9 +241,6 @@ body {
     background-color: #e5e7eb;
     font-weight: 600;
     color: var(--primary-color);
-}
-
-.results th {
     position: sticky;
     top: 0;
     z-index: 1;
@@ -255,17 +251,7 @@ body {
 }
 
 .results tr:hover {
-    background-color: #e6f0fa; /* Light cyan hover effect */
-}
-
-.results td:last-child {
-    color: var(--accent-color);
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.results td:last-child:hover {
-    color: #a33e0a; /* Darker accent on hover */
+    background-color: #e6f0fa;
 }
 
 .no-results {
@@ -297,10 +283,9 @@ body {
 }
 
 .add-button:hover {
-    background-color: #a33e0a; /* Darker shade of accent */
+    background-color: #a33e0a;
 }
 
-/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
@@ -309,7 +294,7 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(5, 10, 48, 0.7); /* Semi-transparent overlay with primary color */
+    background-color: rgba(5, 10, 48, 0.7);
     overflow: auto;
     display: flex;
     align-items: center;
@@ -323,10 +308,10 @@ body {
     border-radius: 12px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Softer shadow for minimalist look */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     position: relative;
-    border: 1px solid #e5e7eb; /* Light border for subtlety */
+    border: 1px solid #e5e7eb;
     animation: fadeIn 0.3s ease-in-out;
 }
 
@@ -347,7 +332,16 @@ body {
     font-weight: 500;
     color: var(--primary-color);
     line-height: 1.5;
-    padding: 0 15px; /* Add padding for better text spacing */
+    padding: 0 15px;
+}
+
+.modal-content a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.modal-content a:hover {
+    text-decoration: underline;
 }
 
 .close-btn {
@@ -364,14 +358,14 @@ body {
 }
 
 .close-btn:hover {
-    color: var(--accent-color); /* Burnt orange for hover */
+    color: var(--accent-color);
 }
 
 .modal-buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-top: 10px; /* Adjusted spacing */
+    margin-top: 10px;
 }
 
 .modal-button {
@@ -383,32 +377,31 @@ body {
     font-weight: 500;
     transition: all 0.3s ease;
     min-width: 90px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .confirm-btn {
-    background-color: var(--primary-color); /* Deep navy blue for Yes */
+    background-color: var(--primary-color);
     color: white;
 }
 
 .confirm-btn:hover {
-    background-color: #1a2a4e; /* Darker navy blue on hover */
+    background-color: #1a2a4e;
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(5, 10, 48, 0.2);
 }
 
 .cancel-btn {
-    background-color: #e5e7eb; /* Light gray for No */
+    background-color: #e5e7eb;
     color: var(--primary-color);
 }
 
 .cancel-btn:hover {
-    background-color: #d1d5db; /* Slightly darker gray on hover */
+    background-color: #d1d5db;
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Media Queries for Mobile */
 @media (max-width: 767px) {
     .nav-brand h1 {
         font-size: 1.1rem;
@@ -420,7 +413,7 @@ body {
     }
 
     .sidebar {
-        width: 200px; /* Slightly narrower on mobile */
+        width: 200px;
     }
 
     .main-content {
@@ -443,13 +436,13 @@ body {
     }
 
     .search-filter-container {
-        flex-direction: column; /* Stack on mobile */
+        flex-direction: column;
     }
 
     .filter-form,
     .search-form {
-        flex-direction: column; /* Stack elements vertically on mobile */
-        width: 100%; /* Full width on mobile */
+        flex-direction: column;
+        width: 100%;
     }
 
     .filter-form select,
@@ -457,13 +450,13 @@ body {
     .search-form input,
     .search-form select,
     .search-form button {
-        flex: 1 1 100%; /* Equal width, full width on mobile */
-        margin-bottom: 10px; /* Space between stacked elements */
+        flex: 1 1 100%;
+        margin-bottom: 10px;
     }
 
     .filter-form button,
     .search-form button {
-        margin-bottom: 0; /* Remove margin from last button */
+        margin-bottom: 0;
     }
 
     .results th,
@@ -537,4 +530,104 @@ body {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Updated Dropdown Styles to Match the Image */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.dropdown-btn {
+    padding: 6px 10px;
+    background-color: transparent;
+    color: #000;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-btn:hover {
+    border-color: #999;
+    background-color: #f5f5f5;
+}
+
+.dropdown-btn i {
+    font-size: 0.8rem;
+    margin-left: 5px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 100px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1002;
+    right: 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all 0.2s ease;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown-content a {
+    color: #000;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .dropdown-btn {
+        max-width: 90px;
+        font-size: 0.85rem;
+        padding: 5px 8px;
+    }
+    
+    .dropdown-content {
+        min-width: 90px;
+    }
+    
+    .dropdown-content a {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Ensure table cell alignment */
+.results td {
+    vertical-align: middle;
+    padding: 12px;
 }

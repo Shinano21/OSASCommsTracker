@@ -142,6 +142,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('logoutModal').style.display = 'none';
             document.getElementById('adminModal').style.display = 'none';
+
             const dashboardLink = document.querySelector('.nav-menu a[href="dashboard.html"]');
             if (dashboardLink) {
                 dashboardLink.addEventListener('click', (e) => {
@@ -157,7 +158,7 @@
                 });
             }
             loadSection('communications');
-            loadFilteredData(); // Load filtered data on page load
+            loadFilteredData();
             updatePageTitle();
         });
 
@@ -220,57 +221,32 @@
                 headers.forEach(header => {
                     html += `<th>${header}</th>`;
                 });
-                html += `</tr></thead><tbody>`;
+                html += `<th>Actions</th></tr></thead><tbody>`;
+                
                 for (let i = 1; i < data.length; i++) {
                     html += `<tr>`;
                     const row = data[i];
                     headers.forEach((header, index) => {
                         let cellData = row[index] || '';
-                        // Format the Date column (index 0)
                         if (header.toLowerCase() === 'date' && cellData) {
                             const date = new Date(cellData);
                             if (!isNaN(date)) {
-                                cellData = date.toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                }); // e.g., "April 2, 2025"
+                                cellData = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                             }
                         }
-                        // Format the Time column (index 5 for incoming, index 6 for outgoing)
                         if (header.toLowerCase() === 'time' && cellData) {
-                            // Check if the time matches the "HH:MM AM/PM" format
                             const timeMatch = cellData.match(/^(\d{1,2}):(\d{2})\s?(AM|PM)$/i);
                             if (timeMatch) {
-                                // Extract hours, minutes, and period (AM/PM)
                                 let hours = parseInt(timeMatch[1], 10);
                                 const minutes = timeMatch[2];
                                 const period = timeMatch[3].toUpperCase();
-
-                                // Convert 12-hour format to 24-hour for Date parsing
-                                if (period === 'PM' && hours !== 12) {
-                                    hours += 12;
-                                } else if (period === 'AM' && hours === 12) {
-                                    hours = 0;
-                                }
-
-                                // Get the date from the Date column (index 0)
+                                if (period === 'PM' && hours !== 12) hours += 12;
+                                else if (period === 'AM' && hours === 12) hours = 0;
                                 const dateFromDateColumn = new Date(row[0]);
                                 if (!isNaN(dateFromDateColumn)) {
-                                    // Combine the date with the parsed time
-                                    const combinedDateTime = new Date(
-                                        dateFromDateColumn.getFullYear(),
-                                        dateFromDateColumn.getMonth(),
-                                        dateFromDateColumn.getDate(),
-                                        hours,
-                                        minutes
-                                    );
+                                    const combinedDateTime = new Date(dateFromDateColumn.getFullYear(), dateFromDateColumn.getMonth(), dateFromDateColumn.getDate(), hours, minutes);
                                     if (!isNaN(combinedDateTime)) {
-                                        cellData = combinedDateTime.toLocaleTimeString('en-US', {
-                                            hour: 'numeric',
-                                            minute: '2-digit',
-                                            hour12: true
-                                        }); // e.g., "12:33 PM"
+                                        cellData = combinedDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
                                     } else {
                                         cellData = "N/A";
                                     }
@@ -278,14 +254,9 @@
                                     cellData = "N/A";
                                 }
                             } else {
-                                // If the time format is invalid, use the time from the Date column
                                 const dateFromDateColumn = new Date(row[0]);
                                 if (!isNaN(dateFromDateColumn)) {
-                                    cellData = dateFromDateColumn.toLocaleTimeString('en-US', {
-                                        hour: "numeric",
-                                        minute: "2-digit",
-                                        hour12: true
-                                    }); // e.g., "12:00 PM"
+                                    cellData = dateFromDateColumn.toLocaleTimeString('en-US', { hour: "numeric", minute: "2-digit", hour12: true });
                                 } else {
                                     cellData = "N/A";
                                 }
@@ -293,6 +264,17 @@
                         }
                         html += `<td>${cellData}</td>`;
                     });
+                    html += `
+                        <td>
+                            <div class="dropdown">
+                                <button class="dropdown-btn">Actions <i class="bi bi-caret-down-fill"></i></button>
+                                <div class="dropdown-content">
+                                    <a href="view.html?sheet=${sheetName}&control=${row[1]}" target="_blank">View</a>
+                                    <a href="update.html?sheet=${sheetName}&control=${row[1]}" target="_blank">Update</a>
+                                </div>
+                            </div>
+                        </td>
+                    `;
                     html += `</tr>`;
                 }
                 html += `</tbody></table>`;
@@ -409,7 +391,7 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', loadFilteredData); // Load filtered data on page load
+        document.addEventListener('DOMContentLoaded', loadFilteredData);
     </script>
 </body>
 </html>

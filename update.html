@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>OCT - Update Record</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="images/OSAS.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <style>
+        .form-container { max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; 
+            padding: 8px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            background-color: white;
+        }
+        .form-group textarea { height: 100px; }
+        .button-group { text-align: right; }
+        .btn { padding: 10px 20px; margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <!-- NAV BAR -->
+    <div class="nav-bar">
+        <div class="nav-brand">
+            <a href="dashboard.html" class="btn btn-secondary" style="font-size: 14px; padding: 5px 10px;">←</a>
+            <h1 id="pageTitle">OSASCommsTracker</h1>
+        </div>
+        <div class="nav-menu">
+            <span class="nav-static">Update Record</span>
+            <div class="datetime" id="datetime"></div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="container">
+            <div class="form-container">
+                <h2>Update Record</h2>
+                <form id="updateForm">
+                    <div id="formFields"></div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='dashboard.html'">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        window.addEventListener('popstate', function(event) {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+            }
+        });
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            document.getElementById('datetime').textContent = now.toLocaleString('en-US', options);
+        }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sheetName = urlParams.get('sheet');
+            const controlNumber = urlParams.get('control');
+
+            if (!sheetName || !controlNumber) {
+                alert('Invalid record selection');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        'action': 'getData',
+                        'sheetName': sheetName,
+                        'token': localStorage.getItem('authToken')
+                    }).toString()
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    const headers = result.data[0];
+                    const rowData = result.data.find(row => row[1] == controlNumber);
+                    if (!rowData) {
+                        alert('Record not found');
+                        window.location.href = 'dashboard.html';
+                        return;
+                    }
+
+                    let html = '';
+                    headers.forEach((header, index) => {
+                        const value = rowData[index] || '';
+                        if (header.toLowerCase() === 'date' || header.toLowerCase() === 'date received') {
+                            const date = new Date(value);
+                            const dateValue = !isNaN(date) ? date.toISOString().split('T')[0] : '';
+                            html += `
+                                <div class="form-group">
+                                    <label>${header}</label>
+                                    <input type="date" name="${header.toLowerCase().replace(' ', '_')}" value="${dateValue}" required>
+                                </div>`;
+                        } else if (header.toLowerCase() === 'time' || header.toLowerCase() === 'time received') {
+                            html += `
+                                <div class="form-group">
+                                    <label>${header}</label>
+                                    <input type="time" name="${header.toLowerCase().replace(' ', '_')}" value="${convertTo24Hour(value)}" required>
+                                </div>`;
+                        } else if (header.toLowerCase() === 'control number') {
+                            html += `
+                                <div class="form-group">
+                                    <label>${header}</label>
+                                    <input type="number" name="${header.toLowerCase().replace(' ', '_')}" value="${value}" readonly>
+                                </div>`;
+                        } else if (header.toLowerCase() === 'status') {
+                            html += `
+                                <div class="form-group">
+                                    <label>${header}</label>
+                                    <select name="${header.toLowerCase().replace(' ', '_')}" required>
+                                        <option value="Pending" ${value === 'Pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="In Progress" ${value === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                        <option value="Completed" ${value === 'Completed' ? 'selected' : ''}>Completed</option>
+                                        <option value="Cancelled" ${value === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                    </select>
+                                </div>`;
+                        } else {
+                            html += `
+                                <div class="form-group">
+                                    <label>${header}</label>
+                                    <input type="text" name="${header.toLowerCase().replace(' ', '_')}" value="${value}" required>
+                                </div>`;
+                        }
+                    });
+                    document.getElementById('formFields').innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error loading record');
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        document.getElementById('updateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const urlParams = new URLSearchParams(window.location.search);
+            const sheetName = urlParams.get('sheet');
+            const controlNumber = urlParams.get('control');
+
+            try {
+                const formData = new FormData(this);
+                const data = new URLSearchParams();
+                data.append('action', 'update');
+                data.append('sheetName', sheetName);
+                data.append('control_number', controlNumber);
+                data.append('token', localStorage.getItem('authToken'));
+                
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'time' || key === 'time_received') {
+                        value = convertTo12HourFormat(value);
+                    }
+                    data.append(key, value);
+                }
+
+                const response = await fetch('https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: data.toString()
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Record updated successfully');
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Error updating record: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error updating record:', error);
+                alert('Error updating record');
+            }
+        });
+
+        function convertTo24Hour(time12) {
+            if (!time12 || time12 === 'N/A') return '';
+            const [time, period] = time12.split(' ');
+            let [hours, minutes] = time.split(':');
+            hours = parseInt(hours);
+            if (period === 'PM' && hours !== 12) hours += 12;
+            if (period === 'AM' && hours === 12) hours = 0;
+            return `${hours.toString().padStart(2, '0')}:${minutes}`;
+        }
+
+        function convertTo12HourFormat(time24) {
+            const [hours, minutes] = time24.split(':');
+            let hoursNum = parseInt(hours, 10);
+            const period = hoursNum >= 12 ? 'PM' : 'AM';
+            hoursNum = hoursNum % 12 || 12;
+            return `${hoursNum}:${minutes} ${period}`;
+        }
+    </script>
+</body>
+</html>
