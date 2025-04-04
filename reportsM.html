@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     <title>Communications Summary - April 2025 (Partial)</title>
     <style>
         body {
@@ -76,16 +77,20 @@
             border-radius: 5px;
             text-align: center;
         }
-        .summary p {
-            margin: 10px 0;
-            font-size: 1.1rem;
-        }
-        .summary strong {
-            color: #2c3e50;
+        .chart-container {
+            position: relative;
+            margin: auto;
+            width: 350px; /* Slightly larger for better readability */
+            height: 350px;
         }
         .error {
             color: red;
             text-align: center;
+            margin-top: 10px;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
             margin-top: 10px;
         }
         .button-group-top {
@@ -101,6 +106,10 @@
                 margin: 0;
                 padding: 0;
             }
+            .chart-container {
+                width: 100%;
+                height: auto;
+            }
         }
     </style>
 </head>
@@ -115,7 +124,6 @@
     </nav>
 
     <div class="main-content">
-        <!-- Letterhead for printing -->
         <div class="letterhead">
             <div class="letterhead-top">
                 <p class="republic">REPUBLIC OF THE PHILIPPINES</p>
@@ -141,40 +149,179 @@
             <div class="button-group-top">
                 <button class="btn btn-primary" onclick="handlePrint()">Print</button>
             </div>
-            <div id="summary-section" class="summary"></div>
+            <div id="summary-section" class="summary">
+                <div id="loadingMessage" class="loading">Loading report...</div>
+                <div class="chart-container">
+                    <canvas id="commsChart"></canvas>
+                </div>
+            </div>
             <div id="errorMessage" class="error"></div>
         </div>
     </div>
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbx2BoO552w3Ah0qMX2IXHnQlmEpgaXs7sbn7WVVfWBwJ7Hwu5QQ_765xa5DNY5dK9B6/exec';
-        const TOKEN = '<replace_with_your_valid_token>'; // Replace with a valid token from your GAS login
+        const TOKEN = localStorage.getItem('authToken') || '<replace_with_your_valid_token>';
+
+        let chartInstance = null;
 
         async function fetchAndDisplayData() {
-            try {
-                const response = await fetch(`${API_URL}?action=report&token=${TOKEN}`);
-                const data = await response.json();
+            const summarySection = document.getElementById('summary-section');
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const chartCanvas = document.getElementById('commsChart');
 
-                if (!data.success) {
-                    document.getElementById('errorMessage').textContent = `Error: ${data.message}`;
-                    return;
+            try {
+                if (!TOKEN || TOKEN === '<replace_with_your_valid_token>') {
+                    throw new Error('Authentication token missing or invalid. Please log in.');
                 }
 
-                const report = data.report;
+                const response = await fetch(`${API_URL}?action=report&month=4&year=2025&token=${TOKEN}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
 
-                // Update summary section with totals
-                document.getElementById('summary-section').innerHTML = `
-                    <p><strong>Total Incoming:</strong> ${report.summary.total_incoming}</p>
-                    <p><strong>Total Outgoing:</strong> ${report.summary.total_outgoing}</p>
-                `;
+                const data = await response.json();
+                loadingMessage.style.display = 'none';
+
+                if (!data || typeof data !== 'object' || !data.success) {
+                    throw new Error(data.message || 'Invalid response from server');
+                }
+
+                if (!data.report || !data.report.summary) {
+                    throw new Error('Report summary data is missing');
+                }
+
+                const summary = data.report.summary;
+                const totalIncoming = summary.total_incoming || 0;
+                const totalOutgoing = summary.total_outgoing || 0;
+                const total = totalIncoming + totalOutgoing;
+
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                chartInstance = new Chart(chartCanvas, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Incoming', 'Outgoing'],
+                        datasets: [{
+                            data: [totalIncoming, totalOutgoing],
+                            backgroundColor: ['#36A2EB', '#FF6384'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.raw;
+                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                        return `${context.label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    plugins: [{
+                        id: 'customLabels',
+                        afterDatasetsDraw(chart) {
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            const datasets = chart.data.datasets;
+                            datasets.forEach((dataset, i) => {
+                                const meta = chart.getDatasetMeta(i);
+                                meta.data.forEach((element, index) => {
+                                    const value = dataset.data[index];
+                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    const { x, y } = element.tooltipPosition();
+
+                                    // Draw numbers
+                                    ctx.fillStyle = '#fff';
+                                    ctx.font = 'bold 18px Arial'; // Larger font for numbers
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'middle';
+                                    ctx.fillText(value, x, y - 10); // Number above center
+
+                                    // Draw percentages
+                                    ctx.font = '12px Arial'; // Smaller font for percentages
+                                    ctx.fillText(`${percentage}%`, x, y + 10); // Percentage below
+                                });
+                            });
+                            ctx.restore();
+                        }
+                    }]
+                });
+
             } catch (error) {
-                document.getElementById('errorMessage').textContent = `Failed to load report: ${error.message}`;
+                loadingMessage.style.display = 'none';
+                errorMessage.textContent = `Error: ${error.message}`;
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+                chartInstance = new Chart(chartCanvas, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Incoming', 'Outgoing'],
+                        datasets: [{
+                            data: [0, 0],
+                            backgroundColor: ['#36A2EB', '#FF6384'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        }
+                    },
+                    plugins: [{
+                        id: 'customLabels',
+                        afterDatasetsDraw(chart) {
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            const datasets = chart.data.datasets;
+                            datasets.forEach((dataset, i) => {
+                                const meta = chart.getDatasetMeta(i);
+                                meta.data.forEach((element, index) => {
+                                    const value = dataset.data[index];
+                                    const { x, y } = element.tooltipPosition();
+                                    ctx.fillStyle = '#fff';
+                                    ctx.font = 'bold 18px Arial';
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'middle';
+                                    ctx.fillText(value, x, y - 10);
+                                    ctx.font = '12px Arial';
+                                    ctx.fillText('0%', x, y + 10);
+                                });
+                            });
+                            ctx.restore();
+                        }
+                    }]
+                });
+                console.error('Fetch error:', error);
             }
         }
 
         function updateDateTime() {
             const now = new Date();
-            const options = { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+            const options = { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: true 
+            };
             document.getElementById('datetime').textContent = now.toLocaleString('en-US', options);
         }
 
@@ -182,7 +329,6 @@
             window.print();
         }
 
-        // Initialize on page load
         window.onload = function() {
             updateDateTime();
             setInterval(updateDateTime, 1000);
