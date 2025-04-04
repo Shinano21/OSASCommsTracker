@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* Style for the time input to match the form's design */
         input[type="time"] {
             padding: 5px;
             width: 100%;
@@ -20,7 +19,6 @@
     </style>
 </head>
 <body>
-    <!-- NAV BAR -->
     <div class="nav-bar">
         <div class="nav-brand">
             <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">☰</button>
@@ -32,7 +30,6 @@
         </div>
     </div>
 
-    <!-- SIDE BAR -->
     <div class="sidebar">
         <ul>
             <li><a href="dashboard.html"><i class="bi bi-house-door"></i> Dashboard</a></li>
@@ -45,18 +42,14 @@
     <div class="main-content">
         <div class="container">
             <div class="form-container">
-                <!-- Tabs Inside Container -->
                 <div class="tab-container">
                     <div class="tab active" onclick="switchTab('incoming')">Incoming</div>
                     <div class="tab" onclick="switchTab('outgoing')">Outgoing</div>
                 </div>
 
-                <!-- Incoming Form -->
                 <div id="incoming" class="form-section active">
-                    <form id="incomingForm" action="https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec" method="POST">
+                    <form id="incomingForm" action="https://script.google.com/macros/s/AKfycbx2BoO552w3Ah0qMX2IXHnQlmEpgaXs7sbn7WVVfWBwJ7Hwu5QQ_765xa5DNY5dK9B6/exec" method="POST">
                         <input type="hidden" name="type" value="incoming">
-                        
-                        <!-- Combine Date and Control Number -->
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1;">
                                 <label for="dateIncoming">Date <span class="required">*</span></label>
@@ -67,7 +60,6 @@
                                 <input type="number" id="control_numberIncoming" name="control_number" required placeholder="Enter control number">
                             </div>
                         </div>
-
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1;">
                                 <label for="buildingIncoming">Building <span class="required">*</span></label>
@@ -82,13 +74,10 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="particularsIncoming">Particulars <span class="required">*</span></label>
                             <textarea id="particularsIncoming" name="particulars" required placeholder="e.g. Request for event approval..."></textarea>
                         </div>
-
-                        <!-- Native Time Input -->
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1;">
                                 <label for="timeIncoming">Time Received <span class="required">*</span></label>
@@ -99,7 +88,6 @@
                                 <input type="text" id="actionIncoming" name="userAction" placeholder="Enter action taken">
                             </div>
                         </div>
-
                         <div class="button-group">
                             <button type="button" class="btn btn-view" onclick="viewRecords()">
                                 <i class="bi bi-eye"></i> <span class="button-text">View Records</span>
@@ -111,12 +99,9 @@
                     </form>
                 </div>
 
-                <!-- Outgoing Form -->
                 <div id="outgoing" class="form-section">
-                    <form id="outgoingForm" action="https://script.google.com/macros/s/AKfycbwJ_xFb7N2EOJONodvETyFpyMTPwFVk-_lS4vMfXDTQpuFJL_WeUovZfg_bX-dADZPz/exec" method="POST">
+                    <form id="outgoingForm" action="https://script.google.com/macros/s/AKfycbx2BoO552w3Ah0qMX2IXHnQlmEpgaXs7sbn7WVVfWBwJ7Hwu5QQ_765xa5DNY5dK9B6/exec" method="POST">
                         <input type="hidden" name="type" value="outgoing">
-
-                        <!-- Combine Date and Control Number -->
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1;">
                                 <label for="dateOutgoing">Date <span class="required">*</span></label>
@@ -127,7 +112,6 @@
                                 <input type="number" id="control_numberOutgoing" name="control_number" required placeholder="Enter control number">
                             </div>
                         </div>
-
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1;">
                                 <label for="buildingOutgoing">Building <span class="required">*</span></label>
@@ -142,13 +126,10 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="particularsOutgoing">Particulars <span class="required">*</span></label>
                             <textarea id="particularsOutgoing" name="particulars" required placeholder="e.g. Travel Order for BSIT students..."></textarea>
                         </div>
-
-                        <!-- Native Time Input -->
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1;">
                                 <label for="date_receivedOutgoing">Date Received <span class="required">*</span></label>
@@ -163,7 +144,6 @@
                                 <input type="text" id="receiverOutgoing" name="receiver" required placeholder="Enter receiver name">
                             </div>
                         </div>
-
                         <div class="button-group">
                             <button type="button" class="btn btn-view" onclick="viewRecords()">
                                 <i class="bi bi-eye"></i> View Records
@@ -178,7 +158,6 @@
         </div>
     </div>
 
-    <!-- LOGOUT MODAL -->
     <div id="logoutModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="hideLogoutModal()">×</span>
@@ -190,7 +169,6 @@
         </div>
     </div>
 
-    <!-- Success Modal -->
     <div class="modal-overlay" id="successOverlay"></div>
     <div class="success-modal" id="successModal">
         <h3>Success</h3>
@@ -199,7 +177,6 @@
     </div>
 
     <script>
-        // Building-to-office mapping
         const buildingOfficeData = {
             "Main Building": ["Registrar's Office", "Admissions Office", "Accounting Office", "President's Office"],
             "Science Building": ["Physics Lab", "Chemistry Lab", "Biology Lab", "IT Department"],
@@ -207,7 +184,6 @@
             "Engineering Building": ["Mechanical Engineering Office", "Civil Engineering Office", "Electrical Engineering Office"]
         };
 
-        // Check login status
         if (localStorage.getItem('isLoggedIn') !== 'true' || !localStorage.getItem('authToken')) {
             window.location.href = 'index.html';
         }
@@ -227,7 +203,20 @@
             populateBuildings('incoming');
             populateBuildings('outgoing');
             updatePageTitle();
+            setDefaultDateTime();
         });
+
+        function setDefaultDateTime() {
+            const defaultDate = '2025-04-02';
+            const defaultTime = '14:00';
+            
+            document.getElementById('dateIncoming').value = defaultDate;
+            document.getElementById('timeIncoming').value = defaultTime;
+            
+            document.getElementById('dateOutgoing').value = defaultDate;
+            document.getElementById('date_receivedOutgoing').value = defaultDate;
+            document.getElementById('time_receivedOutgoing').value = defaultTime;
+        }
 
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
@@ -336,7 +325,6 @@
             }
         }
 
-        // Function to toggle button state
         function toggleButtonState(button, isSubmitting) {
             const buttonText = button.querySelector('.button-text');
             if (isSubmitting) {
@@ -352,16 +340,14 @@
             }
         }
 
-        // Convert 24-hour time (from input type="time") to 12-hour format
         function convertTo12HourFormat(time24) {
             const [hours, minutes] = time24.split(':');
             let hoursNum = parseInt(hours, 10);
             const period = hoursNum >= 12 ? 'PM' : 'AM';
-            hoursNum = hoursNum % 12 || 12; // Convert 0 or 12 to 12, others to 1-11
+            hoursNum = hoursNum % 12 || 12;
             return `${hoursNum}:${minutes} ${period}`;
         }
 
-        // Incoming Form Submission
         document.getElementById('incomingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const submitButton = document.getElementById('incomingSubmit');
@@ -386,7 +372,6 @@
                     return;
                 }
 
-                // Convert the 24-hour time to 12-hour format
                 const time12 = convertTo12HourFormat(this.time.value);
 
                 const data = new URLSearchParams();
@@ -413,6 +398,7 @@
                     showSuccessModal(`${result.message} Time recorded: ${time12}`);
                     this.reset();
                     populateBuildings('incoming');
+                    setDefaultDateTime(); // Reset defaults after form submission
                 } else {
                     alert('Error adding incoming record: ' + result.message);
                 }
@@ -423,7 +409,6 @@
             }
         });
 
-        // Outgoing Form Submission
         document.getElementById('outgoingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const submitButton = document.getElementById('outgoingSubmit');
@@ -448,7 +433,6 @@
                     return;
                 }
 
-                // Convert the 24-hour time to 12-hour format
                 const timeReceived12 = convertTo12HourFormat(this.time_received.value);
 
                 const data = new URLSearchParams();
@@ -476,6 +460,7 @@
                     showSuccessModal(`${result.message} Time received: ${timeReceived12}`);
                     this.reset();
                     populateBuildings('outgoing');
+                    setDefaultDateTime(); // Reset defaults after form submission
                 } else {
                     alert('Error adding outgoing record: ' + result.message);
                 }

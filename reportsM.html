@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Communications Summary - April 2025 (Partial)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        .navbar {
+            background-color: #003087;
+            padding: 10px;
+        }
+        .navbar-brand h1 {
+            color: white;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .datetime {
+            color: white;
+            font-size: 0.9rem;
+        }
+        .main-content {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .letterhead {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .letterhead-top p, .letterhead-top h2 {
+            margin: 5px 0;
+        }
+        .republic {
+            font-size: 0.9rem;
+        }
+        .office {
+            font-size: 0.85rem;
+        }
+        .letterhead-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .letterhead-logos img {
+            width: 60px;
+            height: auto;
+        }
+        .letterhead-text p {
+            margin: 2px 0;
+            font-size: 0.9rem;
+        }
+        .header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .print-month-year {
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        .summary {
+            background-color: #e6f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .summary p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        .summary strong {
+            color: #2c3e50;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .button-group-top {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        @media print {
+            .navbar, .button-group-top {
+                display: none;
+            }
+            .main-content {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <h1>Communications Summary</h1>
+            </a>
+            <div class="datetime" id="datetime"></div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <!-- Letterhead for printing -->
+        <div class="letterhead">
+            <div class="letterhead-top">
+                <p class="republic">REPUBLIC OF THE PHILIPPINES</p>
+                <h2>BICOL UNIVERSITY</h2>
+                <p class="office">OFFICE OF STUDENT DEVELOPMENT AFFAIRS AND SERVICES DIVISION</p>
+            </div>
+            <div class="letterhead-bottom">
+                <div class="letterhead-logos">
+                    <img src="images/BU LOGO.png" alt="BU Logo" id="bu-logo">
+                    <img src="images/OSAS.png" alt="OSAS Logo" id="osas-logo">
+                </div>
+                <div class="letterhead-text">
+                    <p>OFFICE OF THE DIRECTOR</p>
+                    <p>☎ (052) 480-0167</p>
+                    <p>✉ usds.buosas@bicol-u.edu.ph</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="header">COMMUNICATIONS SUMMARY</div>
+            <div id="printMonthYear" class="print-month-year">April 1 - 3, 2025</div>
+            <div class="button-group-top">
+                <button class="btn btn-primary" onclick="handlePrint()">Print</button>
+            </div>
+            <div id="summary-section" class="summary"></div>
+            <div id="errorMessage" class="error"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbx2BoO552w3Ah0qMX2IXHnQlmEpgaXs7sbn7WVVfWBwJ7Hwu5QQ_765xa5DNY5dK9B6/exec';
+        const TOKEN = '<replace_with_your_valid_token>'; // Replace with a valid token from your GAS login
+
+        async function fetchAndDisplayData() {
+            try {
+                const response = await fetch(`${API_URL}?action=report&token=${TOKEN}`);
+                const data = await response.json();
+
+                if (!data.success) {
+                    document.getElementById('errorMessage').textContent = `Error: ${data.message}`;
+                    return;
+                }
+
+                const report = data.report;
+
+                // Update summary section with totals
+                document.getElementById('summary-section').innerHTML = `
+                    <p><strong>Total Incoming:</strong> ${report.summary.total_incoming}</p>
+                    <p><strong>Total Outgoing:</strong> ${report.summary.total_outgoing}</p>
+                `;
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = `Failed to load report: ${error.message}`;
+            }
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+            document.getElementById('datetime').textContent = now.toLocaleString('en-US', options);
+        }
+
+        function handlePrint() {
+            window.print();
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            fetchAndDisplayData();
+        };
+    </script>
+</body>
+</html>
