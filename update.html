@@ -91,15 +91,15 @@
             }
 
             try {
-                const response = await fetch('https://script.google.com/macros/s/AKfycbx2BoO552w3Ah0qMX2IXHnQlmEpgaXs7sbn7WVVfWBwJ7Hwu5QQ_765xa5DNY5dK9B6/exec', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        'action': 'view',
-                        'type': sheetName,
-                        'control_number': controlNumber,
-                        'token': localStorage.getItem('authToken')
-                    }).toString()
+                // Use GET request for the 'view' action
+                const params = new URLSearchParams({
+                    action: 'view',
+                    type: sheetName,
+                    control_number: controlNumber,
+                    token: localStorage.getItem('authToken')
+                });
+                const response = await fetch(`https://script.google.com/macros/s/AKfycbx2BoO552w3Ah0qMX2IXHnQlmEpgaXs7sbn7WVVfWBwJ7Hwu5QQ_765xa5DNY5dK9B6/exec?${params.toString()}`, {
+                    method: 'GET'
                 });
 
                 const result = await response.json();
@@ -137,11 +137,11 @@
                                 <div class="form-group">
                                     <label>${header}</label>
                                     <select name="${header.toLowerCase().replace(' ', '_')}" required>
-                                    <option value="Pending" ${value === 'Pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="In Progress" ${value === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                    <option value="Completed" ${value === 'Completed' ? 'selected' : ''}>Completed</option>
-                                    <option value="Cancelled" ${value === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                                </select>
+                                        <option value="Pending" ${value === 'Pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="In Progress" ${value === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                        <option value="Completed" ${value === 'Completed' ? 'selected' : ''}>Completed</option>
+                                        <option value="Cancelled" ${value === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                    </select>
                                 </div>`;
                         } else {
                             const inputType = header.toLowerCase() === 'particulars' ? 'textarea' : 'input';
