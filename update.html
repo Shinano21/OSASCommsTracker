@@ -106,37 +106,58 @@
                 console.log('View Response:', result);
 
                 if (result.success && result.record) {
+                    const type = sheetName.toLowerCase();
                     const headers = Object.keys(result.record).map(key => key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()));
                     const rowData = Object.values(result.record);
 
                     let html = '';
                     headers.forEach((header, index) => {
                         const value = rowData[index] || '';
-                        if (header.toLowerCase() === 'date' || header.toLowerCase() === 'date received') {
+                        const fieldName = header.toLowerCase().replace(' ', '_');
+
+                        // Skip fields that don't apply to the type
+                        if (type === 'incoming' && (fieldName === 'date_received' || fieldName === 'time_received' || fieldName === 'receiver')) {
+                            return; // Skip outgoing-specific fields
+                        }
+                        if (type === 'outgoing' && fieldName === 'user_action') {
+                            return; // Skip incoming-specific field
+                        }
+
+                        // Determine if the field is required
+                        const isRequired = (
+                            fieldName === 'date' ||
+                            fieldName === 'building' ||
+                            fieldName === 'office' ||
+                            fieldName === 'particulars' ||
+                            (type === 'incoming' && (fieldName === 'time')) ||
+                            (type === 'outgoing' && (fieldName === 'date_received' || fieldName === 'time_received' || fieldName === 'receiver'))
+                        );
+
+                        if (fieldName === 'date' || fieldName === 'date_received') {
                             const date = new Date(value);
                             const dateValue = !isNaN(date) ? date.toISOString().split('T')[0] : '';
                             html += `
                                 <div class="form-group">
                                     <label>${header}</label>
-                                    <input type="date" name="${header.toLowerCase().replace(' ', '_')}" value="${dateValue}" required>
+                                    <input type="date" name="${fieldName}" value="${dateValue}" ${isRequired ? 'required' : ''}>
                                 </div>`;
-                        } else if (header.toLowerCase() === 'time' || header.toLowerCase() === 'time received') {
+                        } else if (fieldName === 'time' || fieldName === 'time_received') {
                             html += `
                                 <div class="form-group">
                                     <label>${header}</label>
-                                    <input type="time" name="${header.toLowerCase().replace(' ', '_')}" value="${convertTo24Hour(value)}" required>
+                                    <input type="time" name="${fieldName}" value="${convertTo24Hour(value)}" ${isRequired ? 'required' : ''}>
                                 </div>`;
-                        } else if (header.toLowerCase() === 'control number') {
+                        } else if (fieldName === 'control_number') {
                             html += `
                                 <div class="form-group">
                                     <label>${header}</label>
-                                    <input type="text" name="${header.toLowerCase().replace(' ', '_')}" value="${value}" readonly>
+                                    <input type="text" name="${fieldName}" value="${value}" readonly>
                                 </div>`;
-                        } else if (header.toLowerCase() === 'status') {
+                        } else if (fieldName === 'status') {
                             html += `
                                 <div class="form-group">
                                     <label>${header}</label>
-                                    <select name="${header.toLowerCase().replace(' ', '_')}" required>
+                                    <select name="${fieldName}" ${isRequired ? 'required' : ''}>
                                         <option value="Pending" ${value === 'Pending' ? 'selected' : ''}>Pending</option>
                                         <option value="In Progress" ${value === 'In Progress' ? 'selected' : ''}>In Progress</option>
                                         <option value="Completed" ${value === 'Completed' ? 'selected' : ''}>Completed</option>
@@ -144,10 +165,10 @@
                                     </select>
                                 </div>`;
                         } else {
-                            const inputType = header.toLowerCase() === 'particulars' ? 'textarea' : 'input';
+                            const inputType = fieldName === 'particulars' ? 'textarea' : 'input';
                             const inputElement = inputType === 'textarea' ? 
-                                `<textarea name="${header.toLowerCase().replace(' ', '_')}" required>${value}</textarea>` :
-                                `<input type="text" name="${header.toLowerCase().replace(' ', '_')}" value="${value}" required>`;
+                                `<textarea name="${fieldName}" ${isRequired ? 'required' : ''}>${value}</textarea>` :
+                                `<input type="text" name="${fieldName}" value="${value}" ${isRequired ? 'required' : ''}>`;
                             html += `
                                 <div class="form-group">
                                     <label>${header}</label>
