@@ -121,7 +121,7 @@ body {
 .main-content {
     margin-left: 0;
     margin-top: var(--header-height);
-    padding: 15px;
+    padding: 20px 20px 40px;
     transition: margin-left 0.3s ease;
     min-height: calc(100vh - var(--header-height));
 }
@@ -232,7 +232,9 @@ body {
 
 .results th,
 .results td {
-    padding: 14px;
+    padding: 14px 16px;
+    vertical-align: middle;
+    word-break: break-word;
     border: 1px solid #e5e7eb;
     text-align: left;
 }
@@ -244,6 +246,11 @@ body {
     position: sticky;
     top: 0;
     z-index: 1;
+}
+
+.results td {
+    position: relative;
+    vertical-align: middle;
 }
 
 .results tr:nth-child(even) {
@@ -303,8 +310,9 @@ body {
 
 .modal-content {
     background-color: white;
-    margin: 15% auto;
-    padding: 30px;
+    margin: 10% auto;
+    padding: 25px;
+    transform: translateY(0);
     border-radius: 12px;
     width: 90%;
     max-width: 400px;
@@ -312,7 +320,7 @@ body {
     text-align: center;
     position: relative;
     border: 1px solid #e5e7eb;
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.4s ease-out;
 }
 
 @keyframes fadeIn {
@@ -450,6 +458,7 @@ body {
     .search-form input,
     .search-form select,
     .search-form button {
+        width: 100%;
         flex: 1 1 100%;
         margin-bottom: 10px;
     }
@@ -569,6 +578,7 @@ body {
 }
 
 .dropdown-content {
+    visibility: hidden;
     display: none;
     position: absolute;
     background-color: white;
@@ -580,10 +590,11 @@ body {
     border: 1px solid #ccc;
     opacity: 0;
     transform: translateY(5px);
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .dropdown:hover .dropdown-content {
+    visibility: visible;
     display: block;
     opacity: 1;
     transform: translateY(0);

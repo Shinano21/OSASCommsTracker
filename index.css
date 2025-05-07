@@ -8,6 +8,7 @@
     --white: #ffffff;
     --radius: 20px;
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --spacing-unit: 8px;
 }
 
 body {
@@ -17,10 +18,29 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #89f7fe, #66a6ff);
-    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #004e92 0%,#72c6ef  100%);
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
     color: var(--text-dark);
     overflow: hidden;
+}
+
+/* Background Logo Styling */
+.background-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+}
+
+.background-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    opacity: 0.5;
+    pointer-events: none; 
 }
 
 .login-container {
@@ -35,14 +55,23 @@ body {
     animation: fadeIn 0.8s ease;
     border: 1px solid var(--glass-effect);
     text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
 h2 {
     margin-bottom: 30px;
-    color: var(--white);
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     font-weight: 600;
     font-size: 28px;
 }
+
+.welcome {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
 
 .form-group {
     margin-bottom: 20px;
@@ -62,8 +91,9 @@ input[type="password"] {
     width: 100%;
     padding: 14px 16px;
     border-radius: var(--radius);
-    border: none;
-    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.15);
     color: white;
     font-size: 16px;
     outline: none;
@@ -73,7 +103,8 @@ input[type="password"] {
 input[type="text"]:focus,
 input[type="password"]:focus {
     background: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.4);
 }
 
 input::placeholder {
@@ -92,6 +123,7 @@ button {
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 10px;
+    box-shadow: 0 5px 10px rgba(74, 144, 226, 0.3);
 }
 
 button:hover {
@@ -124,18 +156,22 @@ button:active {
 }
 
 .forgot-password {
+    text-align: center;
     margin-top: 16px;
 }
 
-a {
-    color: white;
-    text-decoration: underline;
-    transition: color 0.3s;
-    cursor: pointer; /* Makes it a pointer */
+.forgot-password a {
+    color: #000080;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    cursor: pointer; 
 }
 
-a:hover {
-    color: var(--primary-dark);
+.forgot-password a:hover {
+    text-decoration: underline;
+    color: #cce0ff;
 }
 
 /* Fade-in Animation */
@@ -175,6 +211,13 @@ a:hover {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transform: scale(1);
+    animation: modalShow 0.3s ease;
+}
+
+@keyframes modalShow {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .modal-header {
@@ -288,4 +331,44 @@ a:hover {
 @keyframes spin {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 30px 20px;
+    }
+
+    input, button {
+        font-size: 15px;
+        padding: 12px;
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+}
+
+
+#message {
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 12px;
+    border-radius: 10px;
+    display: none;
+    transition: all 0.3s ease;
+}
+
+#message.success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+    display: block;
+}
+
+#message.error {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #c53228;
+    border: 1px solid #ef4e42;
+    display: block;
 }
